@@ -1,0 +1,22 @@
+{
+  "models": {
+    "v1": {
+      "model_path": "backend/ml/artifacts/human_bot_model.pkl",
+      "training_date": "2026-03-14T12:53:26.176259",
+      "feature_schema": [
+        "avg_mouse_speed",
+        "mouse_accel_variance",
+        "click_interval_mean",
+        "click_interval_std",
+        "typing_latency_variance",
+        "scroll_speed_mean",
+        "scroll_accel_mean",
+        "interaction_density",
+        "avg_idle_duration"
+      ],
+      "performance_metrics": {
+        "accuracy": 1.0
+      }
+    }
+  }
+}
