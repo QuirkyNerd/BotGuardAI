@@ -19,23 +19,45 @@ from backend.services.security_middleware import SecurityMiddleware
 from backend.database.session import engine
 from backend.database.base import Base
 
-
 load_dotenv()
 
 
 def _get_allowed_origins() -> List[str]:
-    origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:3000")
-    return [origin.strip() for origin in origins_env.split(",") if origin.strip()]
+    """
+    Allowed frontend origins (CORS).
+    Includes localhost for development and Vercel domains for production.
+    """
+
+    default_origins = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+
+        # Vercel deployments
+        "https://bot-guard-ai.vercel.app",
+        "https://bot-guard-ai-git-main-quirkynerds-projects.vercel.app",
+        "https://bot-guard-qiwkix4gc-quirkynerds-projects.vercel.app",
+    ]
+
+    env_origins = os.getenv("ALLOWED_ORIGINS")
+
+    if env_origins:
+        return [origin.strip() for origin in env_origins.split(",") if origin.strip()]
+
+    return default_origins
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> Any:  # pragma: no cover - startup/shutdown wiring
+async def lifespan(app: FastAPI) -> Any:
     """
-    FastAPI lifespan context: initialize shared resources like the ML model and logging store.
+    FastAPI lifespan context: initialize shared resources like
+    ML model, database, and logging.
     """
+
     registry_path = os.getenv(
-        "MODEL_REGISTRY_PATH", "backend/ml/artifacts/model_registry.json"
+        "MODEL_REGISTRY_PATH",
+        "backend/ml/artifacts/model_registry.json"
     )
+
     model_version = os.getenv("MODEL_VERSION", "latest")
     log_level = os.getenv("LOG_LEVEL", "INFO")
 
@@ -44,16 +66,19 @@ async def lifespan(app: FastAPI) -> Any:  # pragma: no cover - startup/shutdown 
 
     logger.info("Initializing BotGuard AI backend...")
 
-    # Ensure all database tables exist (creates them if absent).
+    # Ensure DB tables exist
     logger.info("Initializing database tables...")
     Base.metadata.create_all(bind=engine)
     logger.info("Database initialized.")
 
+    # Load ML model
     model_path = resolve_model_path(Path(registry_path), requested_version=model_version)
     logger.info("Loading ML model from {}", model_path)
+
     load_model(str(model_path))
     logger.info("Model loaded successfully.")
 
+    # Initialize logging store
     init_logging_store()
 
     logger.info("Initialization complete. Backend is ready.")
@@ -71,6 +96,7 @@ app = FastAPI(
 )
 
 
+# CORS middleware (critical for Vercel → Render communication)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_get_allowed_origins(),
@@ -79,8 +105,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# Security middleware
 app.add_middleware(SecurityMiddleware)
 
+
+# API routes
 app.include_router(api_router, prefix="/api")
 app.include_router(metrics_router)
 
@@ -88,6 +118,6 @@ app.include_router(metrics_router)
 @app.get("/health", tags=["system"])
 async def health_check() -> dict:
     """
-    Basic health check for readiness probes and monitoring.
+    Basic health check for monitoring and readiness probes.
     """
     return {"status": "ok"}
