@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 from contextlib import asynccontextmanager
-from typing import Any, List
+from typing import Any
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -19,31 +19,8 @@ from backend.services.security_middleware import SecurityMiddleware
 from backend.database.session import engine
 from backend.database.base import Base
 
+
 load_dotenv()
-
-
-def _get_allowed_origins() -> List[str]:
-    """
-    Allowed frontend origins (CORS).
-    Includes localhost for development and Vercel domains for production.
-    """
-
-    default_origins = [
-        "http://localhost:5173",
-        "http://localhost:3000",
-
-        # Vercel deployments
-        "https://bot-guard-ai.vercel.app",
-        "https://bot-guard-ai-git-main-quirkynerds-projects.vercel.app",
-        "https://bot-guard-qiwkix4gc-quirkynerds-projects.vercel.app",
-    ]
-
-    env_origins = os.getenv("ALLOWED_ORIGINS")
-
-    if env_origins:
-        return [origin.strip() for origin in env_origins.split(",") if origin.strip()]
-
-    return default_origins
 
 
 @asynccontextmanager
@@ -72,10 +49,15 @@ async def lifespan(app: FastAPI) -> Any:
     logger.info("Database initialized.")
 
     # Load ML model
-    model_path = resolve_model_path(Path(registry_path), requested_version=model_version)
+    model_path = resolve_model_path(
+        Path(registry_path),
+        requested_version=model_version
+    )
+
     logger.info("Loading ML model from {}", model_path)
 
     load_model(str(model_path))
+
     logger.info("Model loaded successfully.")
 
     # Initialize logging store
@@ -96,10 +78,12 @@ app = FastAPI(
 )
 
 
-# CORS middleware (critical for Vercel → Render communication)
+# =========================
+# FIXED CORS CONFIGURATION
+# =========================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=_get_allowed_origins(),
+    allow_origins=["*"],   # allow requests from Vercel frontend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
