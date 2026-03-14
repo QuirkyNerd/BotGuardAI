@@ -1,125 +1,320 @@
-BotGuard AI – ML-Based Passive Human Verification
-=================================================
+# BotGuard AI
 
-BotGuard AI is a production-quality prototype of a **passive, ML‑based human verification system** that serves as an alternative to traditional CAPTCHAs. It detects whether a user is human or an automated bot using **behavioral telemetry** collected from the browser, analyzed by a **FastAPI + scikit-learn** backend.
+## Behavioral Bot Detection and Human Verification Platform
 
-## Features
+BotGuard AI is an intelligent behavioral verification system that distinguishes human users from automated bots using machine learning and behavioral telemetry analysis. Unlike traditional CAPTCHA-based solutions, BotGuard AI relies on passive monitoring of user interaction patterns such as mouse movement, scrolling behavior, and typing dynamics to compute a probabilistic human confidence score.
 
-- **Passive human verification**
-  - Mouse movement trajectory, speed, and acceleration
-  - Scroll behavior
-  - Click timing and intervals
-  - Typing rhythm and latency
-  - Focus/blur events and idle times
-  - Session duration and interaction density
-  - Basic browser fingerprint metadata
-- **ML-based detection**
-  - RandomForest classifier trained on synthetic human vs bot behavior
-  - Feature engineering service to convert raw telemetry into numerical features
-  - Decision engine producing:
-    - `human_probability`
-    - `risk_level`
-    - `recommended_action`
-- **Modern frontend**
-  - React + TypeScript + Vite
-  - TailwindCSS UI
-  - Chart.js‑based analytics and probability visualizations
-  - Real‑time verification status indicator and dashboard
-- **Backend**
-  - FastAPI with Pydantic schemas
-  - Layered architecture (API, feature engineering, ML, decision engine, logging)
-  - Model artifact loaded from disk
+The system provides a scalable architecture combining behavioral feature engineering, machine learning inference, and risk-based decision logic to protect web applications from automated abuse while maintaining a seamless user experience.
 
-## Project Structure
+---
 
-```text
-botguard-ai/
-  backend/
-    api/
-    services/
-    ml/
-      artifacts/
-    models/
-  frontend/
-    src/
-      components/
-      hooks/
-      services/
-  scripts/
-    train_model.py
-  docs/
-    architecture.md
-  requirements.txt
-  package.json
-  .env.example
-  README.md
+# Live Deployment
+
+### Frontend Application
+
+https://bot-guard-ai.vercel.app
+
+### Backend API (Swagger Documentation)
+
+https://botguardai.onrender.com/docs
+
+---
+
+# Project Description
+
+## Problem Statement
+
+Automated bots increasingly exploit web applications for activities such as:
+
+* Credential stuffing
+* Web scraping
+* Spam generation
+* Fraudulent transactions
+
+Traditional defenses such as CAPTCHAs introduce significant friction for legitimate users and are frequently bypassed by modern automation frameworks.
+
+The challenge is to design a non-intrusive verification system that accurately differentiates humans from bots using behavioral interaction patterns rather than explicit challenges.
+
+---
+
+# Proposed Solution
+
+BotGuard AI addresses this problem using a behavioral biometrics approach. Instead of interrupting users with CAPTCHAs, the system collects interaction telemetry from the browser and analyzes behavioral patterns using machine learning models.
+
+The platform evaluates signals such as:
+
+* Mouse movement speed and acceleration
+* Click timing and interaction intervals
+* Scrolling dynamics
+* Typing latency patterns
+* Interaction density and idle duration
+
+These signals are transformed into behavioral feature vectors and passed through a trained machine learning model that estimates the probability of the session belonging to a human user.
+
+A risk-based decision engine then determines whether the session should be:
+
+* Allowed
+* Challenged
+* Blocked
+
+This approach enables continuous and invisible verification while maintaining usability.
+
+---
+
+# System Architecture
+
+The platform follows a modular architecture consisting of the following components.
+
+### Frontend Telemetry Collector
+
+Captures real-time behavioral events including:
+
+* Mouse movements
+* Clicks
+* Keystrokes
+* Scroll activity
+* Browser metadata
+
+### Behavioral Data Ingestion API
+
+A FastAPI backend service that receives telemetry batches and manages behavioral data processing.
+
+### Feature Engineering Pipeline
+
+Transforms raw behavioral telemetry into structured behavioral features suitable for machine learning inference.
+
+### Machine Learning Inference Engine
+
+A trained classification model evaluates behavioral features and produces a human probability score.
+
+### Risk Evaluation Engine
+
+Calculates a composite risk score and determines recommended security actions.
+
+### Analytics and Monitoring Dashboard
+
+Provides visual insights into:
+
+* Session classification outcomes
+* Human probability distributions
+* Risk analytics
+
+---
+
+# Workflow
+
+```
+User Interaction (Mouse / Keyboard / Scroll)
+           ↓
+Frontend Telemetry Collector
+           ↓
+Behavior Data API
+           ↓
+Feature Engineering
+           ↓
+Machine Learning Model
+           ↓
+Risk Scoring Engine
+           ↓
+Decision Output
+           ↓
+Frontend Visualization Dashboard
 ```
 
-## Getting Started
+This pipeline enables real-time behavioral verification without interrupting legitimate users.
 
-### 1. Backend setup
+---
 
-```bash
+# Technologies Used
+
+## Backend
+
+* Python
+* FastAPI
+* SQLAlchemy
+* Uvicorn
+
+## Machine Learning
+
+* Scikit-learn
+* NumPy
+* Pandas
+* Behavioral feature engineering pipeline
+
+## Frontend
+
+* React
+* Vite
+* JavaScript behavioral event tracking
+
+## Infrastructure
+
+* Render (Backend Hosting)
+* Vercel (Frontend Hosting)
+* GitHub (Version Control)
+
+---
+
+# Installation and Local Setup
+
+## Prerequisites
+
+* Python 3.11+
+* Node.js 18+
+* Git
+
+---
+
+# Clone the Repository
+
+```
+git clone https://github.com/QuirkyNerd/BotGuardAI.git
+cd BotGuardAI
+```
+
+---
+
+# Backend Setup
+
+Navigate to the backend directory and create a virtual environment.
+
+```
 cd backend
-python -m venv .venv
-source .venv/Scripts/activate  # Windows PowerShell: .venv\Scripts\Activate.ps1
-pip install -r ../requirements.txt
+python -m venv venv
 ```
 
-#### Train the model
+Activate the environment.
 
-```bash
-cd ..
-python scripts/train_model.py
+Windows
+
+```
+venv\Scripts\activate
 ```
 
-This will create the model artifact at `backend/ml/artifacts/human_bot_model.pkl`.
+Linux / macOS
 
-#### Run the backend
-
-```bash
-cd backend
-uvicorn main:app --reload
+```
+source venv/bin/activate
 ```
 
-The API will be available at `http://localhost:8000`.
+Install dependencies.
 
-### 2. Frontend setup
+```
+pip install -r requirements.txt
+```
 
-```bash
+Start the FastAPI server.
+
+```
+uvicorn backend.main:app --reload
+```
+
+Backend API will run at:
+
+http://127.0.0.1:8000
+
+Swagger API documentation:
+
+http://127.0.0.1:8000/docs
+
+---
+
+# Frontend Setup
+
+Navigate to the frontend directory.
+
+```
 cd frontend
 npm install
+```
+
+Start the development server.
+
+```
 npm run dev
 ```
 
-The app will be available at the URL printed by Vite (typically `http://localhost:5173`).
+Frontend will run at:
 
-## Environment Configuration
+http://localhost:5173
 
-Copy `.env.example` to `.env` in the project root and adjust values as needed.
+---
 
-Backend uses:
+# Example API Endpoints
 
-- `MODEL_PATH` – path to the serialized scikit-learn model (default: `backend/ml/artifacts/human_bot_model.pkl`)
-- `LOG_LEVEL` – log level (e.g. `INFO`, `DEBUG`)
-- `ALLOWED_ORIGINS` – comma‑separated list of frontend origins for CORS
+## Collect Behavioral Data
 
-## Documentation
+POST /api/collect-behavior
 
-- High-level architecture and design: see `docs/architecture.md`.
+Accepts telemetry batches containing:
 
-## Security & Production Notes
+* Mouse events
+* Keyboard events
+* Scroll interactions
 
-This repository is intended as a **hackathon‑grade prototype** but follows **enterprise‑style structure**:
+---
 
-- Layered, modular architecture suitable for service extraction
-- Explicit typing and validation at API boundaries
-- Centralized feature engineering and decision logic
-- Clear extension points for:
-  - Real data stores (Postgres, Redis)
-  - Message queues and streaming
-  - Advanced device/browser fingerprinting
-  - External monitoring and SIEM integration
+## Verify User Session
 
-Before production use, see `docs/architecture.md` for security considerations and recommended hardening steps.
+POST /api/verify-session
 
+Returns:
+
+* Human probability score
+* Risk level
+* Recommended security action
+
+---
+
+## Analytics
+
+GET /api/analytics
+
+Provides session-level metrics and classification statistics.
+
+---
+
+## Explainability
+
+GET /api/explain/{session_id}
+
+Returns the most influential behavioral features used in classification.
+
+---
+
+# Expected Impact
+
+BotGuard AI demonstrates how behavioral biometrics and machine learning can provide a modern alternative to traditional CAPTCHA systems.
+
+The platform enables:
+
+* Passive bot detection without user friction
+* Continuous behavioral verification
+* Risk-based access control
+* Protection against automated abuse
+
+Potential applications include:
+
+* Authentication security
+* Fraud prevention
+* Web scraping protection
+* Account takeover detection
+* E-commerce bot mitigation
+
+---
+
+# Future Enhancements
+
+Potential improvements include:
+
+* Deep learning behavioral models
+* Real-time anomaly detection
+* Integration with Web Application Firewalls
+* Federated behavioral datasets
+* Adaptive risk scoring mechanisms
+
+---
+
+# License
+
+This project is released under the MIT License.
