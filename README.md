@@ -2,6 +2,7 @@
 
 > Multi-engine behavioral bot detection using calibrated classification, anomaly detection, temporal modeling for Passive Human Verification.
 > 
+---
 
 ## 📌 Overview
 
@@ -9,6 +10,7 @@ BotGuard AI is a real-time, privacy-first behavioral biometrics framework design
 
 The core platform combines a **Multi-Engine Intelligence Stack** (Calibrated Random Forest, Isolation Forest Anomaly Detector, and Temporal 1D Convolutional Neural Network) with **Risk Engine 2.0** to deliver adaptive access control decisions (`ALLOW`, `CHALLENGE`, `BLOCK`) with sub-45ms end-to-end latency.
 
+---
 
 ## ✨ Key Features
 
