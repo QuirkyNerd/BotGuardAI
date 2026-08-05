@@ -1,4 +1,6 @@
-# Behavioral Bot Detection - Multi-Engine Behavioral Intelligence for Passive Human Verification
+# Behavioral Bot Detection 
+
+> Multi-Engine Behavioral Intelligence for Passive Human Verification
 
 ## 📌 Overview
 
