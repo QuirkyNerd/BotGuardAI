@@ -1,6 +1,84 @@
+# =============================================================
+# BotGuard AI – .gitignore
+# =============================================================
+
+# ── Python ────────────────────────────────────────────────────
 venv/
 backend/venv/
+.venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+.eggs/
+
+# ── Testing & Coverage ────────────────────────────────────────
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+
+# ── Type Checking ─────────────────────────────────────────────
+.mypy_cache/
+.pytype/
+.pyre/
+
+# ── SQLite Database Files (runtime only) ─────────────────────
+botguard.db
+*.db
+*.sqlite
+*.sqlite3
+
+# ── Environment Files (local secrets) ─────────────────────────
 .env
+.env.local
+.env.production
+.env.development
+.env.*.local
+
+# ── Logs ──────────────────────────────────────────────────────
+*.log
+logs/
+*.log.*
+
+# ── Frontend / Node ───────────────────────────────────────────
 node_modules/
+.next/
+out/
+dist/
+.cache/
+frontend/dist/
+frontend/.cache/
+
+# ── IDEs & Editors ────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── OS Metadata ───────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ── Temporary / Generated ─────────────────────────────────────
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig
+
+# ── Docker ────────────────────────────────────────────────────
+# (Keep Dockerfiles committed; ignore generated compose overrides)
+docker-compose.override.yml

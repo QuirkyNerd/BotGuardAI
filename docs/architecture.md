@@ -1,5 +1,4 @@
-Architecture – BotGuard AI
-===========================
+# Architecture – BotGuard AI
 
 ## Problem Statement
 
@@ -9,224 +8,215 @@ The system must:
 
 - Collect rich behavioral signals in the browser
 - Stream them to a backend API
-- Perform feature engineering and ML inference
-- Produce a human confidence score and recommended action
+- Perform feature engineering and multi-engine ML inference
+- Produce a composite human confidence score and recommended action (ALLOW / CHALLENGE / BLOCK)
 - Expose analytics for monitoring and tuning
+
+---
 
 ## High-Level System Architecture
 
-The system is structured as a set of logical layers:
+```
+Browser Behavioral Telemetry
+         │
+         ▼
+  Feature Engineering Service
+         │
+         ├──────────────────────────────────┐
+         │                                  │
+         ▼                                  ▼
+Aggregate Features (9-dim)       Raw Event Sequence (60×7)
+         │                                  │
+         ├──────────────┐                   │
+         │              │                   │
+         ▼              ▼                   ▼
+Calibrated RF    Isolation Forest    Temporal 1D CNN
+  (human prob)    (anomaly score)   (sequence class)
+         │              │                   │
+         └──────────────┴───────────────────┘
+                        │
+                        ▼
+              Risk Engine 2.0
+         (weighted multi-factor fusion)
+                        │
+                        ▼
+           ALLOW / CHALLENGE / BLOCK
+```
 
-- **Frontend (React + TypeScript)**
-  - `BehaviorCollector` hook and service capture:
-    - Mouse movement, velocity, acceleration
-    - Click intervals and patterns
-    - Scroll speed and acceleration
-    - Typing rhythm and keypress intervals
-    - Focus/blur and idle periods
-    - Session duration and browser metadata
-  - Aggregates telemetry into time-windowed batches and posts them periodically to the backend.
-  - Renders login simulation, verification status, confidence score, and analytics charts.
+---
 
-- **API Layer (FastAPI)**
-  - Endpoints:
-    - `POST /collect-behavior` – ingest raw telemetry batches
-    - `POST /verify-session` – compute features + run ML + return confidence score
-    - `GET /analytics` – return aggregated statistics for dashboard
-  - Validates all payloads using Pydantic models.
+## Layer Descriptions
 
-- **Feature Engineering Service**
-  - Converts raw telemetry into fixed-length numerical feature vectors, including:
-    - Average mouse speed and acceleration variance
-    - Scroll distance and scroll acceleration
-    - Click interval statistics and entropy
-    - Typing latency variance
-    - Interaction density over time
-    - Idle time patterns
-  - Encapsulated in `backend/services/feature_engineering.py`.
+### Frontend (React + TypeScript)
+- `BehaviorCollector` hook and service capture:
+  - Mouse movement, velocity, acceleration
+  - Click intervals and patterns
+  - Scroll speed and acceleration
+  - Typing rhythm and keypress timing intervals (no character content)
+  - Focus/blur and idle periods
+  - Session duration and browser metadata
+- Aggregates telemetry into time-windowed batches and posts them periodically to the backend.
+- Renders login simulation, verification status, confidence score, and analytics charts.
 
-- **ML Inference Service**
-  - Loads a `RandomForestClassifier` model from disk (`MODEL_PATH`).
-  - Provides a typed function to obtain `human_probability` from features.
-  - Encapsulated in `backend/ml/model.py`.
+### API Layer (FastAPI)
+- `POST /api/collect-behavior` – ingest raw telemetry batches (privacy-sanitized at boundary)
+- `POST /api/verify-session` – feature engineering + multi-engine inference + risk decision
+- `GET  /api/analytics` – aggregated verification statistics
+- `GET  /api/session/{id}/heatmap` – mouse movement heatmap grid
+- `GET  /api/explain/{id}` – Random Forest feature importances for session
+- `POST /api/challenge/start` – issue behavioral challenge (slider / pattern / reaction / drag-drop)
+- `POST /api/challenge/verify` – verify challenge response
 
-- **Decision Engine**
-  - Implements tiered decision logic:
-    - `human_probability > 0.85` → `risk_level="low"`, `recommended_action="allow"`
-    - `0.6 <= human_probability <= 0.85` → `risk_level="medium"`, `recommended_action="challenge"`
-    - `< 0.6` → `risk_level="high"`, `recommended_action="block"`
-  - Encapsulated in `backend/services/decision_engine.py`.
+### Feature Engineering Service
+Converts raw telemetry into two representations:
 
-- **Persistence, Logging & Analytics Layer**
-  - PostgreSQL via SQLAlchemy stores:
-    - Sessions (`sessions` table)
-    - Telemetry batches (`telemetry_batches` table – raw JSON payloads)
-    - Feature vectors (`feature_vectors` table – feature store)
-    - Verification results (`verification_results` table)
-  - Logging/analytics service aggregates evaluation outcomes for dashboards.
+**Aggregate Features (9-dimensional vector):**
+- `avg_mouse_speed` — mean inter-event mouse velocity
+- `mouse_accel_variance` — variance of mouse acceleration
+- `click_interval_mean / _std` — timing statistics for click events
+- `typing_latency_variance` — variance of inter-keypress intervals (no key content)
+- `scroll_speed_mean / scroll_accel_mean` — scroll dynamics
+- `interaction_density` — events per second
+- `avg_idle_duration` — mean idle gap length
+
+**Raw Event Sequence (60×7 matrix):**
+Ordered event type one-hot + normalized timestamp + delta + position — for the Temporal CNN.
+
+### Multi-Engine Intelligence Stack
+
+| Engine | Input | Algorithm | Robustness |
+|---|---|---|---|
+| Calibrated Random Forest | 9-dim aggregate features | `RandomForestClassifier` + Platt scaling | Levels 1–3 |
+| Isolation Forest Anomaly Detector | 9-dim aggregate features | Density-based outlier detection on human manifold | Rescues Level 4–5 |
+| Temporal 1D CNN | 60×7 raw event sequence | Lightweight 1D convolutional classifier | 100% across Levels 1–5 (simulated) |
+
+### Risk Engine 2.0
+
+Multi-factor fusion across all three engines:
+
+```
+composite_risk = 0.35 × RF_risk + 0.30 × anomaly_risk + 0.35 × temporal_risk
+              + non-ML indicator penalties (webdriver_detected, headless fingerprint, etc.)
+```
+
+High-confidence security escalation overrides apply when multiple signals agree.
+
+**Decision thresholds:**
+| composite_risk | Action |
+|---|---|
+| < 35.0 | `ALLOW` |
+| 35.0 – 65.0 | `CHALLENGE` |
+| ≥ 65.0 | `BLOCK` |
+
+**Simulated benchmark results (not real-world traffic):**
+- Human Control: 98.5% ALLOW, 1.5% false-rejection rate
+- Bot Levels 1–5: 100% BLOCK across all adversarial tiers
+
+### Persistence Layer (SQLAlchemy + PostgreSQL/SQLite)
+
+Tables: `sessions`, `telemetry_batches`, `feature_vectors`, `verification_results`, `security_events`, `challenges`.
+
+Managed by Alembic migrations (`alembic upgrade head`). SQLite for local development; PostgreSQL for production.
+
+**Privacy enforcement:** keyboard telemetry is sanitized at the persistence boundary — typed characters, key values, and input text are never stored.
+
+---
 
 ## Codebase Layout
 
 ```text
 backend/
-  main.py                 # FastAPI app, wiring, CORS, logging
+  main.py                      # FastAPI app, lifespan, CORS, middleware
+  config.py                    # Centralized path and threshold configuration
   api/
-    routes.py             # API routers and handlers
-  models/
-    schemas.py            # Pydantic request/response models
-  services/
-    feature_engineering.py
-    decision_engine.py
-    logging_service.py
+    routes.py                  # All API endpoints
+  challenge_engine/
+    service.py                 # Challenge generation and verification logic
+  database/
+    base.py                    # SQLAlchemy declarative base
+    session.py                 # Engine builder, SessionLocal, get_db()
+    repository.py              # Data Access Layer (all ORM operations)
   ml/
-    model.py              # Model loader + inference
+    model.py                   # Calibrated RF loader and inference helper
+    model_registry.py          # Model versioning registry utilities
+    calibration.py             # CalibratedModelWrapper (Platt scaling)
+    evaluation.py              # ML metric computation utilities
+    anomaly_detector.py        # Isolation Forest detector
+    temporal_model.py          # Temporal 1D CNN architecture
+    intelligence_engine.py     # Multi-engine orchestrator
     artifacts/
-      human_bot_model.pkl
+      human_bot_model_calibrated.pkl  # Production: Calibrated RF model
+      anomaly_detector.pkl            # Production: Isolation Forest
+      temporal_model.pt               # Production: Temporal 1D CNN weights
+      human_bot_model.pkl             # Legacy: Uncalibrated base RF model
+      model_registry.json             # Model versioning metadata
+  models/
+    db_models.py               # SQLAlchemy ORM entity models
+    schemas.py                 # Pydantic request/response schemas
+  security/
+    risk_engine.py             # Risk Engine 2.0 multi-factor fusion
+    security_middleware.py     # Request security context middleware
+  services/
+    decision_engine.py         # evaluate_session() entrypoint
+    feature_engineering.py     # Telemetry → feature vector
+    feature_store.py           # Feature vector persistence helper
+    logging_service.py         # Evaluation result logging
+    metrics.py                 # Prometheus metrics
+  simulation/
+    bot_simulator.py           # Simple bot behavior generators (testing)
+    adversarial_simulator.py   # Progressive 5-level adversarial bot profiles
 
 frontend/
-  vite.config.ts
-  index.html
-  tailwind.config.cjs
-  postcss.config.cjs
-  tsconfig.json
   src/
-    main.tsx
     App.tsx
-    components/
-      LoginPage.tsx
-      VerificationStatus.tsx
-      BehaviorDashboard.tsx
-      charts/ProbabilityChart.tsx
-      charts/FeatureImportanceChart.tsx (optional mocked)
+    components/          # LoginPage, VerificationStatus, BehaviorDashboard, charts
     hooks/
       useBehaviorCollector.ts
     services/
       apiClient.ts
-      analyticsService.ts
+
+scripts/
+  train_model.py               # Train + register base RF model
+  retrain_model.py             # Incremental RF retraining utility
+  evaluate_baseline.py         # Step 1: Baseline ML evaluation
+  evaluate_calibration.py      # Step 2: Calibration analysis
+  run_bot_benchmark.py         # Step 3: Adversarial benchmark (Levels 1–5)
+  evaluate_anomaly_detection.py # Step 4: Isolation Forest experiment
+  train_temporal_experiment.py # Step 5: Temporal CNN training experiment
+  evaluate_fusion.py           # Step 6: Multi-engine fusion ablation
+
+tests/
+  test_adversarial_benchmark.py
+  test_anomaly_detector.py
+  test_calibration.py
+  test_database_persistence.py
+  test_risk_engine_fusion.py
+  test_temporal_model.py
+
+alembic/
+  env.py                       # Alembic migration environment
+  versions/
+    001_initial_production_schema.py
+
+docs/
+  architecture.md              # This document
+  assets/                      # Selected evaluation visualizations
 ```
 
-## ML Model Design
-
-- **Algorithm:** `RandomForestClassifier`
-  - Robust to noisy features
-  - Works well with heterogeneous, non‑linear relationships
-  - Provides calibrated probability estimates for `human_probability`.
-
-- **Training data:**
-  - Synthetic dataset generated by `scripts/train_model.py`:
-    - **Human behavior:**
-      - Smooth mouse paths with variable speeds and natural pauses
-      - High variance in click intervals and typing latencies
-      - Non‑uniform scroll patterns and intermittent focus changes
-    - **Bot behavior:**
-      - Very low variance in timing, highly regular intervals
-      - Unrealistically fast movements or perfectly linear paths
-      - Constant focus, no idle periods, extremely dense interactions
-
-- **Key features (examples):**
-  - `avg_mouse_speed`
-  - `mouse_accel_variance`
-  - `click_interval_mean`, `click_interval_entropy`
-  - `typing_latency_variance`
-  - `scroll_speed_mean`, `scroll_accel_mean`
-  - `interaction_density`
-  - `avg_idle_duration`
-
-The training script generates these features directly as synthetic numeric values instead of simulating full raw traces, which keeps training fast while preserving realistic relative patterns.
-
-## Feature Engineering
-
-The backend **feature engineering service** accepts batches of raw events for a session:
-
-- Mouse move events with timestamps and positions
-- Scroll events with timestamps and scroll offsets
-- Click events with timestamps and button info
-- Keypress events with timestamps and key codes
-- Focus/blur and idle events
-
-It then computes:
-
-- **Temporal features**
-  - Distributions of time deltas between events
-  - Entropy and variance of intervals
-  - Fraction of session spent idle vs active
-
-- **Spatial features**
-  - Approximate path length vs duration for mouse movement
-  - Derived speed and acceleration statistics
-
-- **Session-level aggregates**
-  - Total events, events per second
-  - Active segments per session window
-
-The output is a **fixed-order feature vector** that the ML model expects; this order is maintained in both `train_model.py` and `backend/services/feature_engineering.py`.
+---
 
 ## Security Considerations
 
-- **Privacy:**
-  - Only behavioral telemetry and coarse browser metadata are collected.
-  - No passwords or sensitive PII are transmitted.
-  - In production, telemetry should be:
-    - Minimized to the necessary subset
-    - Anonymized and/or pseudonymized
-    - Protected in transit (HTTPS/TLS) and at rest (encryption).
+- **Privacy:** Only behavioral timing and spatial metadata are collected. No typed characters, key values, passwords or form content are ever transmitted or persisted. Enforced by sanitization at the backend persistence boundary.
+- **Server-side model:** All feature engineering and ML inference is server-side. Clients never see model weights or decision thresholds.
+- **Security events:** High-risk indicators (webdriver detected, multi-engine anomaly confirmation) are recorded to the `security_events` table with severity classification.
 
-- **Abuse resistance:**
-  - Model and feature logic are server‑side and not exposed to clients.
-  - Telemetry ingestion can be rate‑limited per IP/session.
-  - Anomalous patterns (e.g., extremely high request rates) can be flagged and integrated with a broader fraud detection system.
+---
 
-- **Model hardening:**
-  - The prototype uses a single static model artifact.
-  - In production:
-    - Consider periodic retraining on real traffic data.
-    - Monitor for model drift and adaptation attacks.
-    - Introduce stochastic elements or multiple models to reduce fingerprintability.
+## Deployment
 
-- **Infrastructure:**
-  - FastAPI app is stateless; suitable for horizontal scaling behind a load balancer.
-  - Logging service can be replaced with:
-    - Centralized logging (ELK/Opensearch)
-    - Metrics (Prometheus/Grafana)
-    - Distributed tracing (OpenTelemetry).
+- **Local:** `uvicorn backend.main:app --reload` + `npm run dev`
+- **Docker:** `docker compose up` — orchestrates PostgreSQL, backend, and frontend
+- **Migrations:** `alembic upgrade head` before starting (runs automatically if `create_all` fallback is present)
 
-## Deployment Strategy (Prototype to Production)
-
-### Local / Hackathon Deployment
-
-- Run backend with `uvicorn main:app --reload`.
-- Run frontend with `npm run dev`.
-- Communication over `http://localhost` with relaxed CORS config.
-
-### Containerization (recommended next step)
-
-- Wrap backend in a Docker image:
-  - Base image: `python:3.11-slim`
-  - Install dependencies from `requirements.txt`
-  - Expose port `8000`
-  - Entrypoint: `uvicorn main:app --host 0.0.0.0 --port 8000`
-- Wrap frontend in a Node‑based build image, then serve static bundle (Vite build) via:
-  - Nginx
-  - Or a managed static hosting platform.
-
-### Production Considerations
-
-- **Networking and Security**
-  - Terminate TLS at a reverse proxy or API gateway.
-  - Strict CORS configuration and origin checks.
-  - Authentication/authorization layered on top of verification result.
-
-- **Scalability**
-  - Stateless FastAPI replicas behind load balancers.
-  - Shared model artifact via object storage or image embedding.
-  - External storage for logs and analytics (SQL/NoSQL).
-
-- **Observability**
-  - Structured JSON logs with correlation IDs and session IDs.
-  - Metrics:
-    - Distribution of `human_probability`
-    - False positive / negative rates from downstream labels
-    - Latency of `/verify-session`.
-
-This architecture is intentionally modular so that each layer (feature engineering, ML inference, decision engine, analytics) can be extracted into its own microservice as system complexity grows.
-
+> **Note on benchmark results:** All performance metrics cited in this documentation (98.5% ALLOW, 100% BLOCK) are from controlled simulated adversarial evaluation, not real-world production traffic. Real-world performance will depend on the actual human/bot distribution and traffic patterns.

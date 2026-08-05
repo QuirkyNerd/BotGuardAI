@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from backend.challenge_engine.service import start_challenge, verify_challenge
 from backend.database.session import get_db
-from backend.models.db_models import ChallengeEntity, SessionEntity, TelemetryBatchEntity, VerificationResultEntity
+
 from backend.models.schemas import (
     AnalyticsResponse,
     BehaviorBatch,
@@ -20,17 +20,20 @@ from backend.models.schemas import (
     VerifyRequest,
     VerifyResponse,
 )
-from backend.security.risk_engine import RiskContext, compute_risk_score
+
 from backend.services.decision_engine import evaluate_session
 from backend.services.feature_engineering import compute_features_from_batches
 from backend.services.feature_store import persist_feature_vector
 from backend.services.logging_service import log_evaluation_result, read_analytics
 from backend.services.metrics import VERIFICATION_LATENCY, VERIFICATION_OUTCOME
-from backend.simulation.bot_simulator import simulate_bot
-
+from backend.database.repository import (
+    SecurityEventRepository,
+    SessionRepository,
+    TelemetryRepository,
+    VerificationRepository,
+)
 
 router = APIRouter(prefix="", tags=["verification"])
-
 
 @router.post("/collect-behavior", status_code=200)
 async def collect_behavior(
@@ -43,39 +46,17 @@ async def collect_behavior(
     This endpoint is intentionally lightweight and write-only.
     """
     try:
-        # Upsert session metadata.
-        session = (
-            db.query(SessionEntity)
-            .filter(SessionEntity.session_id == batch.session_id)
-            .one_or_none()
-        )
-        if session is None:
-            session = SessionEntity(
-                session_id=batch.session_id,
-                user_agent=batch.metadata.user_agent if batch.metadata else None,
-                browser_metadata=batch.metadata.model_dump() if batch.metadata else None,
-                ip_address=request.client.host if request.client else None,
-            )
-            db.add(session)
-
-        # Persist telemetry batch.
-        event_counts = {
-            "mouse_moves": len(batch.mouse_moves),
-            "scrolls": len(batch.scrolls),
-            "clicks": len(batch.clicks),
-            "key_presses": len(batch.key_presses),
-            "focus_events": len(batch.focus_events),
-        }
-        entity = TelemetryBatchEntity(
+        SessionRepository.get_or_create(
+            db=db,
             session_id=batch.session_id,
-            started_at_ms=batch.started_at,
-            ended_at_ms=batch.ended_at,
-            event_counts=event_counts,
-            payload=batch.model_dump(mode="json"),
+            user_agent=batch.metadata.user_agent if batch.metadata else None,
+            ip_address=request.client.host if request.client else None,
+            browser_metadata=batch.metadata.model_dump() if batch.metadata else None,
         )
-        db.add(entity)
+        TelemetryRepository.save_batch(db, batch)
         db.commit()
     except Exception as exc:  # pragma: no cover - defensive
+        db.rollback()
         logger.exception("Failed to collect behavior batch: {}", exc)
         raise HTTPException(status_code=500, detail="Failed to collect behavior") from exc
 
@@ -100,12 +81,7 @@ async def verify_session(
                     db=db,
                 )
 
-            rows = (
-                db.query(TelemetryBatchEntity)
-                .filter(TelemetryBatchEntity.session_id == request.session_id)
-                .order_by(TelemetryBatchEntity.started_at_ms.asc())
-                .all()
-            )
+            rows = TelemetryRepository.get_session_batches(db, request.session_id)
             if not rows:
                 raise ValueError(f"No telemetry found for session_id={request.session_id}")
 
@@ -129,41 +105,47 @@ async def verify_session(
                 features=feature_vector.values,
                 browser_metadata=browser_md,
                 security_flags=sec_flags,
+                batch=batches[-1] if batches else None,
             )
 
-            # Persist verification result.
-            vr_entity = VerificationResultEntity(
-                session_id=request.session_id,
+            # Persist verification result via Repository
+            VerificationRepository.save_verification_result(
+                db=db,
+                evaluation=evaluation,
                 model_version=model_version,
-                human_probability=evaluation.human_probability,
-                risk_level=evaluation.risk_level.value,
-                recommended_action=evaluation.recommended_action,
-                risk_score=evaluation.risk_score,
             )
-            db.add(vr_entity)
 
-            # Update session summary.
-            session = (
-                db.query(SessionEntity)
-                .filter(SessionEntity.session_id == request.session_id)
-                .one_or_none()
+            # Record triggered security events if present
+            if evaluation.triggered_indicators:
+                SecurityEventRepository.record_events(
+                    db=db,
+                    session_id=request.session_id,
+                    indicators=evaluation.triggered_indicators,
+                    composite_risk=evaluation.risk_score,
+                )
+
+            # Update session summary
+            SessionRepository.update_summary(
+                db=db,
+                session_id=request.session_id,
+                last_human_probability=evaluation.human_probability,
+                last_risk_level=evaluation.risk_level.value,
             )
-            if session is not None:
-                session.last_human_probability = evaluation.human_probability
-                session.last_risk_level = evaluation.risk_level.value
 
             db.commit()
 
             VERIFICATION_OUTCOME.labels(risk_level=evaluation.risk_level.value).inc()
-
             log_evaluation_result(evaluation)
             return evaluation
     except ValueError as exc:
+        db.rollback()
         logger.warning("Verification failed due to bad input: {}", exc)
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:  # pragma: no cover - defensive
+        db.rollback()
         logger.exception("Verification failed unexpectedly: {}", exc)
         raise HTTPException(status_code=500, detail="Verification failed") from exc
+
 
 
 @router.get("/analytics", response_model=AnalyticsResponse)
@@ -212,11 +194,14 @@ async def simulate_bot_endpoint(
 ) -> BehaviorBatch:
     """
     Generate simulated bot telemetry and optionally persist it.
+    Used for integration testing and benchmark data generation.
     """
-    batch = simulate_bot(session_id=session_id, bot_type=bot_type)
+    from backend.simulation.bot_simulator import simulate_bot as _simulate_bot
+    batch = _simulate_bot(session_id=session_id, bot_type=bot_type)
     # Persist for analytics and inspection.
     await collect_behavior(batch=batch, request=Request(scope={"type": "http"}), db=db)  # type: ignore[arg-type]
     return batch
+
 
 
 @router.get("/session/{session_id}/heatmap", tags=["analytics"])
@@ -227,11 +212,8 @@ async def session_heatmap(
     """
     Build a coarse mouse-movement heatmap grid for a session.
     """
-    rows = (
-        db.query(TelemetryBatchEntity)
-        .filter(TelemetryBatchEntity.session_id == session_id)
-        .all()
-    )
+    rows = TelemetryRepository.get_session_batches(db, session_id)
+
     if not rows:
         raise HTTPException(status_code=404, detail="Session not found")
 
@@ -259,38 +241,41 @@ async def explain_session(
     db: Session = Depends(get_db),
 ) -> dict:
     """
-    Return top feature contributions for the most recent prediction using SHAP.
+    Return top feature importances (Random Forest impurity-based) for the most recent
+    verified session. These reflect overall model-level feature weights rather than
+    per-session SHAP contributions.
     """
-    from backend.ml.model import _ensure_model_loaded  # type: ignore[attr-defined]
-    import numpy as np  # local import to avoid overhead when unused
-    import shap  # type: ignore[import]
-
-    fv = (
-        db.query(TelemetryBatchEntity)
-        .filter(TelemetryBatchEntity.session_id == session_id)
-        .order_by(TelemetryBatchEntity.created_at.desc())
-        .first()
-    )
-    if fv is None:
-        raise HTTPException(status_code=404, detail="No features found for session")
-
-    batch = BehaviorBatch.model_validate(fv.payload)
-    # Reuse feature engineering to compute vector for this batch only.
-    feature_vector = compute_features_from_batches(session_id, [batch])
-    x = np.array([feature_vector.values])
-
-    model = _ensure_model_loaded()
-    explainer = shap.TreeExplainer(model)
-    shap_values = explainer.shap_values(x)[1][0]  # human class
-
-    # Pair with feature names and sort.
+    from backend.ml.intelligence_engine import get_orchestrator
     from backend.services.feature_engineering import FEATURE_NAMES
 
-    pairs = list(zip(FEATURE_NAMES, shap_values))
-    pairs.sort(key=lambda p: abs(p[1]), reverse=True)
-    top = [{"feature": name, "shap_value": float(val)} for name, val in pairs[:5]]
+    rows = TelemetryRepository.get_session_batches(db, session_id)
+    if not rows:
+        raise HTTPException(status_code=404, detail="No telemetry found for session")
 
-    return {"session_id": session_id, "top_features": top}
+    batches = [BehaviorBatch.model_validate(row.payload) for row in rows]
+    feature_vector = compute_features_from_batches(session_id, batches)
+
+    orchestrator = get_orchestrator()
+    rf_wrapper = orchestrator.rf_model
+    if rf_wrapper is None:
+        raise HTTPException(status_code=503, detail="Intelligence stack not loaded")
+
+    # CalibratedModelWrapper.model is the underlying sklearn estimator
+    base_model = rf_wrapper.model
+    if hasattr(base_model, "feature_importances_"):
+        importances = base_model.feature_importances_
+        pairs = list(zip(FEATURE_NAMES, importances))
+        pairs.sort(key=lambda p: p[1], reverse=True)
+        top = [{"feature": name, "importance": float(imp)} for name, imp in pairs[:5]]
+        return {"session_id": session_id, "type": "rf_feature_importance", "top_features": top}
+    else:
+        # Fallback for CalibratedClassifierCV (calibrated wrapper does not expose importances)
+        pairs = list(zip(FEATURE_NAMES, feature_vector.values))
+        pairs.sort(key=lambda p: abs(p[1]), reverse=True)
+        top = [{"feature": name, "value": float(val)} for name, val in pairs[:5]]
+        return {"session_id": session_id, "type": "feature_values", "top_features": top}
+
+
 
 
 @router.post("/protected-resource", tags=["demo"])
@@ -301,12 +286,8 @@ async def protected_resource(
     """
     Example of API protection: access is denied when risk_score exceeds a threshold.
     """
-    vr = (
-        db.query(VerificationResultEntity)
-        .filter(VerificationResultEntity.session_id == session_id)
-        .order_by(VerificationResultEntity.created_at.desc())
-        .first()
-    )
+    vr = VerificationRepository.get_latest_verification_result(db, session_id)
+
     if vr is None:
         raise HTTPException(status_code=403, detail="No verification for session")
 

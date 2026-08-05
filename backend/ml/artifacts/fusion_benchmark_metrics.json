@@ -1,0 +1,354 @@
+{
+  "timestamp_utc": "2026-08-05T07:52:11.313769+00:00",
+  "provisional_thresholds": {
+    "composite_allow_risk_threshold": 35.0,
+    "composite_challenge_risk_threshold": 65.0,
+    "provisional_anomaly_threshold": 58.62
+  },
+  "end_to_end_latency": {
+    "end_to_end_mean_latency_ms": 40.657,
+    "end_to_end_p95_latency_ms": 43.066
+  },
+  "ablation_results": {
+    "1. RF Only": {
+      "Human Control": {
+        "sample_count": 200,
+        "allow_pct": 100.0,
+        "challenge_pct": 0.0,
+        "block_pct": 0.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 0.54,
+        "median_risk_score": 0.49
+      },
+      "Level 1": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 99.5,
+        "median_risk_score": 99.5
+      },
+      "Level 2": {
+        "sample_count": 200,
+        "allow_pct": 1.0,
+        "challenge_pct": 69.0,
+        "block_pct": 30.0,
+        "detection_rate": 0.99,
+        "false_acceptance_rate_far": 0.01,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 60.35,
+        "median_risk_score": 51.31
+      },
+      "Level 3": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.5,
+        "block_pct": 99.5,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 93.93,
+        "median_risk_score": 94.03
+      },
+      "Level 4": {
+        "sample_count": 200,
+        "allow_pct": 100.0,
+        "challenge_pct": 0.0,
+        "block_pct": 0.0,
+        "detection_rate": 0.0,
+        "false_acceptance_rate_far": 1.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 0.62,
+        "median_risk_score": 0.49
+      },
+      "Level 5": {
+        "sample_count": 200,
+        "allow_pct": 100.0,
+        "challenge_pct": 0.0,
+        "block_pct": 0.0,
+        "detection_rate": 0.0,
+        "false_acceptance_rate_far": 1.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 0.5,
+        "median_risk_score": 0.49
+      }
+    },
+    "2. RF + Isolation Forest": {
+      "Human Control": {
+        "sample_count": 200,
+        "allow_pct": 98.5,
+        "challenge_pct": 1.5,
+        "block_pct": 0.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.015,
+        "mean_risk_score": 11.59,
+        "median_risk_score": 9.69
+      },
+      "Level 1": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 99.73,
+        "median_risk_score": 99.73
+      },
+      "Level 2": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 1.0,
+        "block_pct": 99.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 78.19,
+        "median_risk_score": 73.22
+      },
+      "Level 3": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 96.66,
+        "median_risk_score": 96.72
+      },
+      "Level 4": {
+        "sample_count": 200,
+        "allow_pct": 14.0,
+        "challenge_pct": 86.0,
+        "block_pct": 0.0,
+        "detection_rate": 0.86,
+        "false_acceptance_rate_far": 0.14,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 39.89,
+        "median_risk_score": 40.74
+      },
+      "Level 5": {
+        "sample_count": 200,
+        "allow_pct": 10.5,
+        "challenge_pct": 89.5,
+        "block_pct": 0.0,
+        "detection_rate": 0.895,
+        "false_acceptance_rate_far": 0.105,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 39.68,
+        "median_risk_score": 40.19
+      }
+    },
+    "3. RF + Temporal 1D CNN": {
+      "Human Control": {
+        "sample_count": 200,
+        "allow_pct": 100.0,
+        "challenge_pct": 0.0,
+        "block_pct": 0.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 0.29,
+        "median_risk_score": 0.26
+      },
+      "Level 1": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 99.75,
+        "median_risk_score": 99.75
+      },
+      "Level 2": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 1.0,
+        "block_pct": 99.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 80.17,
+        "median_risk_score": 75.65
+      },
+      "Level 3": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 96.93,
+        "median_risk_score": 96.96
+      },
+      "Level 4": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 100.0,
+        "block_pct": 0.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 50.29,
+        "median_risk_score": 50.24
+      },
+      "Level 5": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 100.0,
+        "block_pct": 0.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 50.23,
+        "median_risk_score": 50.24
+      }
+    },
+    "4. ML Fusion (RF+Anom+Temp)": {
+      "Human Control": {
+        "sample_count": 200,
+        "allow_pct": 100.0,
+        "challenge_pct": 0.0,
+        "block_pct": 0.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 7.73,
+        "median_risk_score": 6.53
+      },
+      "Level 1": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 99.82,
+        "median_risk_score": 99.82
+      },
+      "Level 2": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 86.12,
+        "median_risk_score": 82.96
+      },
+      "Level 3": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 97.85,
+        "median_risk_score": 97.87
+      },
+      "Level 4": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 89.0,
+        "block_pct": 11.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 61.57,
+        "median_risk_score": 62.14
+      },
+      "Level 5": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 92.0,
+        "block_pct": 8.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 61.43,
+        "median_risk_score": 61.78
+      }
+    },
+    "5. Full Risk Engine 2.0": {
+      "Human Control": {
+        "sample_count": 200,
+        "allow_pct": 98.5,
+        "challenge_pct": 1.5,
+        "block_pct": 0.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.015,
+        "mean_risk_score": 17.27,
+        "median_risk_score": 15.54
+      },
+      "Level 1": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 99.88,
+        "median_risk_score": 99.88
+      },
+      "Level 2": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 90.34,
+        "median_risk_score": 88.07
+      },
+      "Level 3": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 98.5,
+        "median_risk_score": 98.51
+      },
+      "Level 4": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 80.15,
+        "median_risk_score": 85.0
+      },
+      "Level 5": {
+        "sample_count": 200,
+        "allow_pct": 0.0,
+        "challenge_pct": 0.0,
+        "block_pct": 100.0,
+        "detection_rate": 1.0,
+        "false_acceptance_rate_far": 0.0,
+        "human_false_rejection_rate_frr": 0.0,
+        "mean_risk_score": 75.0,
+        "median_risk_score": 75.0
+      }
+    }
+  }
+}

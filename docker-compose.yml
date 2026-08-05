@@ -4,9 +4,9 @@ services:
   db:
     image: postgres:16
     environment:
-      POSTGRES_USER: botguard
-      POSTGRES_PASSWORD: botguard
-      POSTGRES_DB: botguard
+      POSTGRES_USER: ${POSTGRES_USER:-botguard}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-botguard}
+      POSTGRES_DB: ${POSTGRES_DB:-botguard}
     ports:
       - "5432:5432"
     volumes:
@@ -16,10 +16,11 @@ services:
     build:
       context: .
       dockerfile: docker/backend.Dockerfile
+    env_file:
+      - .env
     environment:
-      DATABASE_URL: postgresql+psycopg2://botguard:botguard@db:5432/botguard
-      ALLOWED_ORIGINS: http://localhost:5173
-      PROMETHEUS_METRICS_ENABLED: "true"
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-botguard}:${POSTGRES_PASSWORD:-botguard}@db:5432/${POSTGRES_DB:-botguard}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:5173}
     depends_on:
       - db
     ports:
@@ -30,7 +31,7 @@ services:
       context: .
       dockerfile: docker/frontend.Dockerfile
     environment:
-      VITE_API_URL: http://localhost:8000/api
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000/api}
     depends_on:
       - backend
     ports:
@@ -38,4 +39,3 @@ services:
 
 volumes:
   db_data:
-

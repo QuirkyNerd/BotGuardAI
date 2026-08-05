@@ -11,8 +11,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
 from backend.api.routes import router as api_router
-from backend.ml.model import load_model
-from backend.ml.model_registry import resolve_model_path
 from backend.services.logging_service import init_logging_store
 from backend.services.metrics import metrics_router
 from backend.services.security_middleware import SecurityMiddleware
@@ -30,12 +28,6 @@ async def lifespan(app: FastAPI) -> Any:
     ML model, database, and logging.
     """
 
-    registry_path = os.getenv(
-        "MODEL_REGISTRY_PATH",
-        "backend/ml/artifacts/model_registry.json"
-    )
-
-    model_version = os.getenv("MODEL_VERSION", "latest")
     log_level = os.getenv("LOG_LEVEL", "INFO")
 
     logger.remove()
@@ -43,22 +35,18 @@ async def lifespan(app: FastAPI) -> Any:
 
     logger.info("Initializing BotGuard AI backend...")
 
+
     # Ensure DB tables exist
     logger.info("Initializing database tables...")
     Base.metadata.create_all(bind=engine)
     logger.info("Database initialized.")
 
-    # Load ML model
-    model_path = resolve_model_path(
-        Path(registry_path),
-        requested_version=model_version
-    )
+    # Load Multi-Engine Intelligence Stack (RF, Anomaly Detector, Temporal 1D CNN)
+    from backend.ml.intelligence_engine import load_intelligence_stack
+    logger.info("Loading Multi-Engine Intelligence Stack...")
+    load_intelligence_stack()
+    logger.info("Multi-Engine Intelligence Stack loaded successfully.")
 
-    logger.info("Loading ML model from {}", model_path)
-
-    load_model(str(model_path))
-
-    logger.info("Model loaded successfully.")
 
     # Initialize logging store
     init_logging_store()

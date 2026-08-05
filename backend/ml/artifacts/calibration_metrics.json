@@ -1,0 +1,319 @@
+{
+  "timestamp_utc": "2026-08-05T06:15:27.018470+00:00",
+  "dataset_limitation_notice": "Current evaluation datasets are highly separable simulated streams. Brier scores near zero reflect feature distinctness rather than real-world calibration completeness.",
+  "class_semantics": {
+    "0": "Bot (Negative Class)",
+    "1": "Human (Positive Class)",
+    "security_definitions": {
+      "False Acceptance Rate (FAR)": "Proportion of Bots (Class 0) incorrectly accepted as Human (Class 1) = FP / (FP + TN)",
+      "False Rejection Rate (FRR)": "Proportion of Humans (Class 1) incorrectly rejected as Bot (Class 0) = FN / (TP + FN)"
+    }
+  },
+  "sample_counts": {
+    "train": 1200,
+    "calibration": 400,
+    "test": 400
+  },
+  "methods_evaluated": [
+    "uncalibrated",
+    "sigmoid",
+    "isotonic"
+  ],
+  "calibration_results": {
+    "uncalibrated": {
+      "decision_threshold": 0.5,
+      "sample_counts": {
+        "total": 400,
+        "bots": 200,
+        "humans": 200
+      },
+      "confusion_matrix": {
+        "tn_bots_correct": 200,
+        "fp_bots_as_human": 0,
+        "fn_humans_as_bot": 0,
+        "tp_humans_correct": 200,
+        "raw_matrix": [
+          [
+            200,
+            0
+          ],
+          [
+            0,
+            200
+          ]
+        ]
+      },
+      "standard_metrics": {
+        "accuracy": 1.0,
+        "precision_human": 1.0,
+        "recall_human": 1.0,
+        "f1_human": 1.0,
+        "roc_auc": 1.0,
+        "pr_auc": 1.0
+      },
+      "security_metrics": {
+        "false_acceptance_rate_far": 0.0,
+        "false_rejection_rate_frr": 0.0,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      "probabilistic_calibration_metrics": {
+        "brier_score": 0.0001381875,
+        "log_loss": 0.0006947613220077162
+      },
+      "reliability_curve_bins": [
+        {
+          "predicted_prob": 5e-05,
+          "actual_freq": 0.0
+        },
+        {
+          "predicted_prob": 0.765,
+          "actual_freq": 1.0
+        },
+        {
+          "predicted_prob": 1.0,
+          "actual_freq": 1.0
+        }
+      ],
+      "probability_stats": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.4994374999999999,
+        "std": 0.4995251456070555,
+        "median": 0.385
+      }
+    },
+    "sigmoid": {
+      "decision_threshold": 0.5,
+      "sample_counts": {
+        "total": 400,
+        "bots": 200,
+        "humans": 200
+      },
+      "confusion_matrix": {
+        "tn_bots_correct": 200,
+        "fp_bots_as_human": 0,
+        "fn_humans_as_bot": 0,
+        "tp_humans_correct": 200,
+        "raw_matrix": [
+          [
+            200,
+            0
+          ],
+          [
+            0,
+            200
+          ]
+        ]
+      },
+      "standard_metrics": {
+        "accuracy": 1.0,
+        "precision_human": 1.0,
+        "recall_human": 1.0,
+        "f1_human": 1.0,
+        "roc_auc": 1.0,
+        "pr_auc": 1.0
+      },
+      "security_metrics": {
+        "false_acceptance_rate_far": 0.0,
+        "false_rejection_rate_frr": 0.0,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      "probabilistic_calibration_metrics": {
+        "brier_score": 3.2459409768816056e-05,
+        "log_loss": 0.005094173621019116
+      },
+      "reliability_curve_bins": [
+        {
+          "predicted_prob": 0.004953299613617989,
+          "actual_freq": 0.0
+        },
+        {
+          "predicted_prob": 0.9947978097873209,
+          "actual_freq": 1.0
+        }
+      ],
+      "probability_stats": {
+        "min": 0.004950616992900949,
+        "max": 0.9950565285770272,
+        "mean": 0.49987555470046835,
+        "std": 0.49492898380473394,
+        "median": 0.4742658248499543
+      }
+    },
+    "isotonic": {
+      "decision_threshold": 0.5,
+      "sample_counts": {
+        "total": 400,
+        "bots": 200,
+        "humans": 200
+      },
+      "confusion_matrix": {
+        "tn_bots_correct": 200,
+        "fp_bots_as_human": 0,
+        "fn_humans_as_bot": 0,
+        "tp_humans_correct": 200,
+        "raw_matrix": [
+          [
+            200,
+            0
+          ],
+          [
+            0,
+            200
+          ]
+        ]
+      },
+      "standard_metrics": {
+        "accuracy": 1.0,
+        "precision_human": 1.0,
+        "recall_human": 1.0,
+        "f1_human": 1.0,
+        "roc_auc": 1.0,
+        "pr_auc": 1.0
+      },
+      "security_metrics": {
+        "false_acceptance_rate_far": 0.0,
+        "false_rejection_rate_frr": 0.0,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      "probabilistic_calibration_metrics": {
+        "brier_score": 0.00012045762182423987,
+        "log_loss": 0.0006447673479300479
+      },
+      "reliability_curve_bins": [
+        {
+          "predicted_prob": 5.102040816326531e-05,
+          "actual_freq": 0.0
+        },
+        {
+          "predicted_prob": 0.7806122448979592,
+          "actual_freq": 1.0
+        },
+        {
+          "predicted_prob": 1.0,
+          "actual_freq": 1.0
+        }
+      ],
+      "probability_stats": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.4994770408163265,
+        "std": 0.49954599842625075,
+        "median": 0.39285714285714285
+      }
+    }
+  },
+  "provisional_threshold_analysis": {
+    "provisional_decision_breakdown": {
+      "status": "PROVISIONAL / SIMULATION-DERIVED",
+      "allow_threshold": 0.85,
+      "challenge_threshold": 0.6,
+      "allow_percentage": 50.0,
+      "challenge_percentage": 0.0,
+      "block_percentage": 50.0,
+      "allow_count": 200,
+      "challenge_count": 0,
+      "block_count": 200
+    },
+    "threshold_sweep": [
+      {
+        "threshold": 0.05,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.1,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.15,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.2,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.25,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.3,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.35,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.4,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.45,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.5,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.55,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.6,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.65,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.7,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.75,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.8,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.85,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.9,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.0
+      },
+      {
+        "threshold": 0.95,
+        "far_percentage": 0.0,
+        "frr_percentage": 0.5
+      }
+    ]
+  }
+}

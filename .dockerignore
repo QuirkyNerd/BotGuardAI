@@ -1,0 +1,54 @@
+# =============================================================
+# BotGuard AI – .dockerignore
+# =============================================================
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Python environments and caches
+venv/
+backend/venv/
+.venv/
+*.py[cod]
+*.egg-info/
+
+# Environment files (secrets must NOT be in image)
+.env
+.env.local
+.env.production
+
+# Testing outputs
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.mypy_cache/
+
+# SQLite development database
+botguard.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Frontend dependencies (built in frontend.Dockerfile)
+frontend/node_modules/
+frontend/.cache/
+frontend/dist/
+
+# Documentation (not needed at runtime)
+docs/
+
+# Logs and temp files
+*.log
+logs/
+tmp/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS metadata
+.DS_Store
+Thumbs.db

@@ -1,0 +1,40 @@
+# BotGuard AI – Git Attributes
+
+# Python
+*.py     text eol=lf
+
+# TypeScript / JavaScript / TSX / JSX
+*.ts     text eol=lf
+*.tsx    text eol=lf
+*.js     text eol=lf
+*.jsx    text eol=lf
+
+# Markup / Data
+*.html   text eol=lf
+*.css    text eol=lf
+*.json   text eol=lf
+*.md     text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.toml   text eol=lf
+*.ini    text eol=lf
+*.cfg    text eol=lf
+*.txt    text eol=lf
+
+# Shell / Docker
+*.sh     text eol=lf
+Dockerfile  text eol=lf
+
+# Binary model artifacts (do not mangle)
+*.pkl    binary
+*.pt     binary
+*.pth    binary
+*.h5     binary
+*.joblib binary
+
+# Images (binary)
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.svg    text eol=lf

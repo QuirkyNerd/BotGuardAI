@@ -112,3 +112,33 @@ def resolve_model_path(
         model_path = Path.cwd() / model_path
 
     return model_path.resolve()
+
+
+def register_model(
+    registry_path: Path,
+    model_version: str,
+    model_path: Path,
+    feature_schema: List[str],
+    performance_metrics: Dict[str, Any],
+) -> None:
+    """
+    Register a trained model artifact in the JSON registry.
+    """
+    models = _load_registry(registry_path)
+    models = [m for m in models if m.model_version != model_version]
+
+    try:
+        rel_path = str(model_path.relative_to(Path.cwd()))
+    except ValueError:
+        rel_path = str(model_path)
+
+    new_meta = ModelMetadata(
+        model_version=model_version,
+        model_path=rel_path,
+        training_date=datetime.utcnow().isoformat(),
+        feature_schema=feature_schema,
+        performance_metrics=performance_metrics,
+    )
+    models.append(new_meta)
+    _save_registry(registry_path, models)
+

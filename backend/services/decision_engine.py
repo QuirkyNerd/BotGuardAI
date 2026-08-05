@@ -5,24 +5,28 @@ from typing import Dict, List, Optional
 
 from loguru import logger
 
-from backend.ml.model import predict_human_probability
-from backend.models.schemas import BrowserMetadata, RiskLevel, VerifyResponse
-from backend.security.risk_engine import RiskContext, compute_risk_score
+from backend.config import (
+    COMPOSITE_ALLOW_RISK_THRESHOLD,
+    COMPOSITE_CHALLENGE_RISK_THRESHOLD,
+)
+from backend.ml.intelligence_engine import run_multi_engine_prediction
+from backend.models.schemas import BehaviorBatch, BrowserMetadata, RiskLevel, VerifyResponse
+from backend.security.risk_engine import compute_risk_score_v2
 
 
 @dataclass
-class DecisionThresholds:
-    allow_threshold: float = 0.85
-    challenge_threshold: float = 0.60
+class RiskThresholds:
+    allow_risk_max: float = COMPOSITE_ALLOW_RISK_THRESHOLD  # Risk < 35.0 => ALLOW
+    challenge_risk_max: float = COMPOSITE_CHALLENGE_RISK_THRESHOLD  # Risk < 65.0 => CHALLENGE (else BLOCK)
 
 
-THRESHOLDS = DecisionThresholds()
+THRESHOLDS = RiskThresholds()
 
 
-def _classify_risk(human_probability: float) -> RiskLevel:
-    if human_probability >= THRESHOLDS.allow_threshold:
+def _classify_risk_v2(composite_risk: float) -> RiskLevel:
+    if composite_risk < THRESHOLDS.allow_risk_max:
         return RiskLevel.LOW
-    if human_probability >= THRESHOLDS.challenge_threshold:
+    if composite_risk < THRESHOLDS.challenge_risk_max:
         return RiskLevel.MEDIUM
     return RiskLevel.HIGH
 
@@ -40,35 +44,47 @@ def evaluate_session(
     features: List[float],
     browser_metadata: Optional[BrowserMetadata] = None,
     security_flags: Optional[Dict[str, object]] = None,
+    batch: Optional[BehaviorBatch] = None,
 ) -> VerifyResponse:
     """
-    Core decision engine entrypoint. Takes a feature vector, invokes the ML model,
-    and maps the resulting probability to a risk level and recommended action.
+    Core Decision Engine 2.0 entrypoint.
+    Executes multi-engine inference (RF, Anomaly Detector, Temporal 1D CNN),
+    evaluates Risk Engine 2.0 multi-factor fusion, and maps composite risk score
+    to action (ALLOW, CHALLENGE, BLOCK).
     """
-    human_probability = predict_human_probability(features)
-    risk_level = _classify_risk(human_probability)
-    ctx = RiskContext(
-        human_probability=human_probability,
+    # 1. Run Multi-Engine Intelligence Stack Inference
+    pred = run_multi_engine_prediction(features, batch=batch)
+
+    # 2. Risk Engine 2.0 Multi-Factor Fusion
+    risk_result = compute_risk_score_v2(
+        pred=pred,
         features=features,
         browser_metadata=browser_metadata,
         security_flags=security_flags or {},
     )
-    risk_score = compute_risk_score(ctx)
+
+    # 3. Classify Risk Level & Decision
+    risk_level = _classify_risk_v2(risk_result.composite_risk_score)
     recommended_action = _recommended_action_for_risk(risk_level)
 
     logger.info(
-        "Session {} evaluated: human_probability={:.3f}, risk_level={}, action={}, risk_score={:.1f}",
+        "Session {} evaluated (Risk Engine 2.0): composite_risk={:.1f}, action={}, rf_prob={:.3f}, anom_score={:.1f}, temp_prob={:.3f}",
         session_id,
-        human_probability,
-        risk_level.value,
+        risk_result.composite_risk_score,
         recommended_action,
-        risk_score,
+        risk_result.human_probability,
+        risk_result.anomaly_score,
+        risk_result.temporal_human_probability,
     )
 
     return VerifyResponse(
         session_id=session_id,
-        human_probability=human_probability,
+        human_probability=risk_result.human_probability,
         risk_level=risk_level,
         recommended_action=recommended_action,
-        risk_score=risk_score,
+        risk_score=risk_result.composite_risk_score,
+        anomaly_score=risk_result.anomaly_score,
+        temporal_human_probability=risk_result.temporal_human_probability,
+        risk_components=risk_result.risk_components,
+        triggered_indicators=risk_result.triggered_indicators,
     )

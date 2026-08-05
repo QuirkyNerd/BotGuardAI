@@ -10,5 +10,6 @@ SQLAlchemy==2.0.35
 psycopg2-binary==2.9.9
 alembic==1.13.2
 prometheus-client==0.21.0
-shap==0.45.1
-
+# PyTorch: required for Temporal 1D CNN (production intelligence engine)
+# Install CPU build: pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cpu
+torch==2.4.0

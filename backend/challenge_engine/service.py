@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from datetime import datetime
-from typing import Tuple
 import random
+from datetime import datetime, timezone
+from typing import Tuple
 
 from loguru import logger
 from sqlalchemy.orm import Session
 
-from backend.models.db_models import ChallengeEntity, SessionEntity
+from backend.database.repository import ChallengeRepository, SessionRepository
 from backend.models.schemas import (
     ChallengeStartRequest,
     ChallengeStartResponse,
@@ -35,7 +35,6 @@ def _build_slider_challenge() -> Tuple[dict, dict]:
 
 
 def _build_pattern_challenge() -> Tuple[dict, dict]:
-    # Simple numeric pattern 2,4,6,?
     token = random.randint(100000, 999999)
     payload = {
         "type": "pattern",
@@ -71,15 +70,7 @@ def _build_drag_drop_challenge() -> Tuple[dict, dict]:
 
 
 def start_challenge(db: Session, req: ChallengeStartRequest) -> ChallengeStartResponse:
-    session = (
-        db.query(SessionEntity)
-        .filter(SessionEntity.session_id == req.session_id)
-        .one_or_none()
-    )
-    if session is None:
-        session = SessionEntity(session_id=req.session_id)
-        db.add(session)
-        db.flush()
+    SessionRepository.get_or_create(db, session_id=req.session_id)
 
     ctype = _pick_type(req.preferred_type)
     if ctype is ChallengeType.SLIDER:
@@ -91,14 +82,13 @@ def start_challenge(db: Session, req: ChallengeStartRequest) -> ChallengeStartRe
     else:
         payload, solution = _build_drag_drop_challenge()
 
-    entity = ChallengeEntity(
+    entity = ChallengeRepository.create_challenge(
+        db=db,
         session_id=req.session_id,
         challenge_type=ctype.value,
-        status="pending",
         payload=payload,
         solution=solution,
     )
-    db.add(entity)
     db.commit()
     db.refresh(entity)
 
@@ -113,19 +103,11 @@ def start_challenge(db: Session, req: ChallengeStartRequest) -> ChallengeStartRe
 
 
 def verify_challenge(db: Session, req: ChallengeVerifyRequest) -> ChallengeVerifyResponse:
-    entity = (
-        db.query(ChallengeEntity)
-        .filter(
-            ChallengeEntity.id == req.challenge_id,
-            ChallengeEntity.session_id == req.session_id,
-        )
-        .one_or_none()
-    )
+    entity = ChallengeRepository.get_challenge(db, challenge_id=req.challenge_id, session_id=req.session_id)
     if entity is None:
         raise ValueError("Challenge not found")
 
     entity.attempts += 1
-
     sol = entity.solution
     resp = req.response_payload
     success = False
@@ -152,7 +134,7 @@ def verify_challenge(db: Session, req: ChallengeVerifyRequest) -> ChallengeVerif
 
     entity.success = success
     entity.status = "solved" if success else "failed"
-    entity.solved_at = datetime.utcnow()
+    entity.solved_at = datetime.now(timezone.utc)
     db.commit()
 
     logger.info(

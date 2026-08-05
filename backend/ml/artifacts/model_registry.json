@@ -1,7 +1,7 @@
 {
   "models": {
     "v1": {
-      "model_path": "backend/ml/artifacts/human_bot_model.pkl",
+      "model_path": "backend/ml/artifacts/human_bot_model_calibrated.pkl",
       "training_date": "2026-03-14T12:53:26.176259",
       "feature_schema": [
         "avg_mouse_speed",
@@ -15,7 +15,9 @@
         "avg_idle_duration"
       ],
       "performance_metrics": {
-        "accuracy": 1.0
+        "accuracy": 1.0,
+        "roc_auc": 1.0,
+        "calibration_method": "isotonic"
       }
     }
   }

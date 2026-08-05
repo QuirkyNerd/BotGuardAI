@@ -1,0 +1,275 @@
+{
+  "timestamp_utc": "2026-08-05T06:23:28.201328+00:00",
+  "training_principle": "Strictly trained on HUMAN-ONLY behavioral data (N_train=1200, N_val=300). Unseen adversarial benchmarks used purely for evaluation.",
+  "random_seed": 42,
+  "isolation_forest_results": {
+    "Human Control": {
+      "sample_count": 200,
+      "anomaly_threshold": 58.62,
+      "score_stats": {
+        "mean": 24.46,
+        "median": 20.2,
+        "std": 17.12,
+        "p90": 49.47,
+        "p95": 56.79,
+        "p99": 69.8
+      },
+      "anomaly_detection_rate": 1.0,
+      "miss_rate": 0.0,
+      "human_false_anomaly_rate": 0.045,
+      "inference_latency": {
+        "mean_latency_ms": 1.658207999971637,
+        "p95_latency_ms": 2.054190000217204
+      }
+    },
+    "Level 1": {
+      "sample_count": 200,
+      "anomaly_threshold": 58.62,
+      "score_stats": {
+        "mean": 100.0,
+        "median": 100.0,
+        "std": 0.0,
+        "p90": 100.0,
+        "p95": 100.0,
+        "p99": 100.0
+      },
+      "anomaly_detection_rate": 1.0,
+      "miss_rate": 0.0,
+      "human_false_anomaly_rate": 0.0,
+      "inference_latency": {
+        "mean_latency_ms": 1.5851800000382354,
+        "p95_latency_ms": 1.7743300000802262
+      }
+    },
+    "Level 2": {
+      "sample_count": 200,
+      "anomaly_threshold": 58.62,
+      "score_stats": {
+        "mean": 100.0,
+        "median": 100.0,
+        "std": 0.0,
+        "p90": 100.0,
+        "p95": 100.0,
+        "p99": 100.0
+      },
+      "anomaly_detection_rate": 1.0,
+      "miss_rate": 0.0,
+      "human_false_anomaly_rate": 0.0,
+      "inference_latency": {
+        "mean_latency_ms": 1.6245240000534977,
+        "p95_latency_ms": 1.9162600001891403
+      }
+    },
+    "Level 3": {
+      "sample_count": 200,
+      "anomaly_threshold": 58.62,
+      "score_stats": {
+        "mean": 100.0,
+        "median": 100.0,
+        "std": 0.0,
+        "p90": 100.0,
+        "p95": 100.0,
+        "p99": 100.0
+      },
+      "anomaly_detection_rate": 1.0,
+      "miss_rate": 0.0,
+      "human_false_anomaly_rate": 0.0,
+      "inference_latency": {
+        "mean_latency_ms": 1.633039999869652,
+        "p95_latency_ms": 2.030549999653885
+      }
+    },
+    "Level 4": {
+      "sample_count": 200,
+      "anomaly_threshold": 58.62,
+      "score_stats": {
+        "mean": 88.29,
+        "median": 90.75,
+        "std": 10.21,
+        "p90": 100.0,
+        "p95": 100.0,
+        "p99": 100.0
+      },
+      "anomaly_detection_rate": 0.99,
+      "miss_rate": 0.01,
+      "human_false_anomaly_rate": 0.0,
+      "inference_latency": {
+        "mean_latency_ms": 1.6115840000566095,
+        "p95_latency_ms": 1.8347000003814171
+      }
+    },
+    "Level 5": {
+      "sample_count": 200,
+      "anomaly_threshold": 58.62,
+      "score_stats": {
+        "mean": 88.24,
+        "median": 88.97,
+        "std": 7.25,
+        "p90": 98.15,
+        "p95": 100.0,
+        "p99": 100.0
+      },
+      "anomaly_detection_rate": 1.0,
+      "miss_rate": 0.0,
+      "human_false_anomaly_rate": 0.0,
+      "inference_latency": {
+        "mean_latency_ms": 1.642072000013286,
+        "p95_latency_ms": 1.9298549999348324
+      }
+    }
+  },
+  "one_class_svm_results": {
+    "Human Control": {
+      "sample_count": 200,
+      "anomaly_threshold": 90.79,
+      "score_stats": {
+        "mean": 43.21,
+        "median": 39.16,
+        "std": 22.51,
+        "p90": 74.86,
+        "p95": 82.82,
+        "p99": 100.0
+      },
+      "anomaly_detection_rate": 1.0,
+      "miss_rate": 0.0,
+      "human_false_anomaly_rate": 0.03,
+      "inference_latency": {
+        "mean_latency_ms": 0.13750999998592306,
+        "p95_latency_ms": 0.2267550001761265
+      }
+    },
+    "Level 1": {
+      "sample_count": 200,
+      "anomaly_threshold": 90.79,
+      "score_stats": {
+        "mean": 100.0,
+        "median": 100.0,
+        "std": 0.0,
+        "p90": 100.0,
+        "p95": 100.0,
+        "p99": 100.0
+      },
+      "anomaly_detection_rate": 1.0,
+      "miss_rate": 0.0,
+      "human_false_anomaly_rate": 0.0,
+      "inference_latency": {
+        "mean_latency_ms": 0.12009200005195453,
+        "p95_latency_ms": 0.1637849997678131
+      }
+    },
+    "Level 2": {
+      "sample_count": 200,
+      "anomaly_threshold": 90.79,
+      "score_stats": {
+        "mean": 100.0,
+        "median": 100.0,
+        "std": 0.0,
+        "p90": 100.0,
+        "p95": 100.0,
+        "p99": 100.0
+      },
+      "anomaly_detection_rate": 1.0,
+      "miss_rate": 0.0,
+      "human_false_anomaly_rate": 0.0,
+      "inference_latency": {
+        "mean_latency_ms": 0.1328079999984766,
+        "p95_latency_ms": 0.22067500017328712
+      }
+    },
+    "Level 3": {
+      "sample_count": 200,
+      "anomaly_threshold": 90.79,
+      "score_stats": {
+        "mean": 100.0,
+        "median": 100.0,
+        "std": 0.0,
+        "p90": 100.0,
+        "p95": 100.0,
+        "p99": 100.0
+      },
+      "anomaly_detection_rate": 1.0,
+      "miss_rate": 0.0,
+      "human_false_anomaly_rate": 0.0,
+      "inference_latency": {
+        "mean_latency_ms": 0.11162400009197881,
+        "p95_latency_ms": 0.12655500017899612
+      }
+    },
+    "Level 4": {
+      "sample_count": 200,
+      "anomaly_threshold": 90.79,
+      "score_stats": {
+        "mean": 100.0,
+        "median": 100.0,
+        "std": 0.0,
+        "p90": 100.0,
+        "p95": 100.0,
+        "p99": 100.0
+      },
+      "anomaly_detection_rate": 1.0,
+      "miss_rate": 0.0,
+      "human_false_anomaly_rate": 0.0,
+      "inference_latency": {
+        "mean_latency_ms": 0.13065600005575106,
+        "p95_latency_ms": 0.23720499998489664
+      }
+    },
+    "Level 5": {
+      "sample_count": 200,
+      "anomaly_threshold": 90.79,
+      "score_stats": {
+        "mean": 100.0,
+        "median": 100.0,
+        "std": 0.0,
+        "p90": 100.0,
+        "p95": 100.0,
+        "p99": 100.0
+      },
+      "anomaly_detection_rate": 1.0,
+      "miss_rate": 0.0,
+      "human_false_anomaly_rate": 0.0,
+      "inference_latency": {
+        "mean_latency_ms": 0.11260200006290688,
+        "p95_latency_ms": 0.12580499987961957
+      }
+    }
+  },
+  "offline_combined_signal_analysis": {
+    "Human Control": {
+      "rf_alone_detection_rate": 1.0,
+      "anomaly_alone_detection_rate": 0.045,
+      "combined_signal_detection_rate": 0.045,
+      "rescued_rf_bypasses_count": 0
+    },
+    "Level 1": {
+      "rf_alone_detection_rate": 1.0,
+      "anomaly_alone_detection_rate": 1.0,
+      "combined_signal_detection_rate": 1.0,
+      "rescued_rf_bypasses_count": 0
+    },
+    "Level 2": {
+      "rf_alone_detection_rate": 0.995,
+      "anomaly_alone_detection_rate": 1.0,
+      "combined_signal_detection_rate": 1.0,
+      "rescued_rf_bypasses_count": 1
+    },
+    "Level 3": {
+      "rf_alone_detection_rate": 1.0,
+      "anomaly_alone_detection_rate": 1.0,
+      "combined_signal_detection_rate": 1.0,
+      "rescued_rf_bypasses_count": 0
+    },
+    "Level 4": {
+      "rf_alone_detection_rate": 0.0,
+      "anomaly_alone_detection_rate": 0.99,
+      "combined_signal_detection_rate": 0.99,
+      "rescued_rf_bypasses_count": 198
+    },
+    "Level 5": {
+      "rf_alone_detection_rate": 0.0,
+      "anomaly_alone_detection_rate": 1.0,
+      "combined_signal_detection_rate": 1.0,
+      "rescued_rf_bypasses_count": 200
+    }
+  }
+}

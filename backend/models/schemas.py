@@ -47,7 +47,7 @@ class ClickEvent(BaseModel):
 
 class KeyPressEvent(BaseModel):
     timestamp: float
-    key: str = Field(..., description="Key identifier")
+    key: Optional[str] = Field(None, description="Key identifier (scrubbed during storage for privacy)")
 
 
 class FocusEvent(BaseModel):
@@ -107,6 +107,13 @@ class VerifyResponse(BaseModel):
     risk_level: RiskLevel
     recommended_action: str
     risk_score: float
+
+    # Optional expanded explainability fields (Risk Engine 2.0)
+    anomaly_score: Optional[float] = None
+    temporal_human_probability: Optional[float] = None
+    risk_components: Optional[dict] = None
+    triggered_indicators: Optional[List[str]] = None
+
 
 
 class ChallengeType(str, Enum):

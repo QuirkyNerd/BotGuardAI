@@ -1,0 +1,730 @@
+{
+  "timestamp_utc": "2026-08-05T06:18:33.327350+00:00",
+  "random_seed": 42,
+  "samples_per_level": 200,
+  "provisional_thresholds": {
+    "allow_threshold": 0.85,
+    "challenge_threshold": 0.6
+  },
+  "uncalibrated_model": {
+    "Level 1": {
+      "level_name": "Level 1",
+      "sample_count": 200,
+      "detection_rate": 1.0,
+      "false_acceptance_rate_far": 0.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.105,
+        "median": 0.105,
+        "std": 0.0
+      },
+      "risk_score_stats": {
+        "mean": 100.0,
+        "median": 100.0
+      },
+      "decision_distribution": {
+        "allow_count": 0,
+        "challenge_count": 0,
+        "block_count": 200,
+        "allow_percentage": 0.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 100.0
+      },
+      "bypassed_sessions_count": 0,
+      "bypassed_sample_examples": [],
+      "mean_features": {
+        "avg_mouse_speed": 2000.6249023742464,
+        "mouse_accel_variance": 0.0,
+        "click_interval_mean": 0.10000000000000007,
+        "click_interval_std": 0.0,
+        "typing_latency_variance": 7.52316384526264e-37,
+        "scroll_speed_mean": 0.0,
+        "scroll_accel_mean": 0.0,
+        "interaction_density": 56.0,
+        "avg_idle_duration": 0.0
+      }
+    },
+    "Level 2": {
+      "level_name": "Level 2",
+      "sample_count": 200,
+      "detection_rate": 1.0,
+      "false_acceptance_rate_far": 0.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.1365,
+        "median": 0.155,
+        "std": 0.022
+      },
+      "risk_score_stats": {
+        "mean": 96.76,
+        "median": 98.51
+      },
+      "decision_distribution": {
+        "allow_count": 0,
+        "challenge_count": 0,
+        "block_count": 200,
+        "allow_percentage": 0.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 100.0
+      },
+      "bypassed_sessions_count": 0,
+      "bypassed_sample_examples": [],
+      "mean_features": {
+        "avg_mouse_speed": 1345.4207987800046,
+        "mouse_accel_variance": 3250597091.961644,
+        "click_interval_mean": 0.1885951152683158,
+        "click_interval_std": 0.052597428919959624,
+        "typing_latency_variance": 0.00015100878476911664,
+        "scroll_speed_mean": 3067.3328978909904,
+        "scroll_accel_mean": 6927.073373138755,
+        "interaction_density": 28.14780287016012,
+        "avg_idle_duration": 0.0
+      }
+    },
+    "Level 3": {
+      "level_name": "Level 3",
+      "sample_count": 200,
+      "detection_rate": 1.0,
+      "false_acceptance_rate_far": 0.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.2309,
+        "median": 0.24,
+        "std": 0.0203
+      },
+      "risk_score_stats": {
+        "mean": 100.0,
+        "median": 100.0
+      },
+      "decision_distribution": {
+        "allow_count": 0,
+        "challenge_count": 0,
+        "block_count": 200,
+        "allow_percentage": 0.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 100.0
+      },
+      "bypassed_sessions_count": 0,
+      "bypassed_sample_examples": [],
+      "mean_features": {
+        "avg_mouse_speed": 837.6237356043648,
+        "mouse_accel_variance": 398482309.2653667,
+        "click_interval_mean": 0.0,
+        "click_interval_std": 0.0,
+        "typing_latency_variance": 0.0007500505948281111,
+        "scroll_speed_mean": 0.0,
+        "scroll_accel_mean": 0.0,
+        "interaction_density": 21.739404773608516,
+        "avg_idle_duration": 0.0
+      }
+    },
+    "Level 4": {
+      "level_name": "Level 4",
+      "sample_count": 200,
+      "detection_rate": 0.0,
+      "false_acceptance_rate_far": 1.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.5727,
+        "median": 0.595,
+        "std": 0.1922
+      },
+      "risk_score_stats": {
+        "mean": 27.07,
+        "median": 13.41
+      },
+      "decision_distribution": {
+        "allow_count": 200,
+        "challenge_count": 0,
+        "block_count": 0,
+        "allow_percentage": 100.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 0.0
+      },
+      "bypassed_sessions_count": 200,
+      "bypassed_sample_examples": [
+        {
+          "session_id": "adv_l4_000",
+          "human_probability": 0.355,
+          "risk_score": 13.346042999608096,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 824.8041601136842,
+            "mouse_accel_variance": 369671194.7121514,
+            "click_interval_mean": 0.780363398799399,
+            "click_interval_std": 0.0,
+            "typing_latency_variance": 0.05344036117052012,
+            "scroll_speed_mean": 1407.7711028683784,
+            "scroll_accel_mean": 2514.883115426411,
+            "interaction_density": 9.652045138761247,
+            "avg_idle_duration": 1.2013196024107597
+          }
+        },
+        {
+          "session_id": "adv_l4_001",
+          "human_probability": 0.735,
+          "risk_score": 13.346042999608096,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 757.0247892738892,
+            "mouse_accel_variance": 290504089.9475187,
+            "click_interval_mean": 0.3690532116830564,
+            "click_interval_std": 0.0,
+            "typing_latency_variance": 0.11341231646983231,
+            "scroll_speed_mean": 2127.182696971849,
+            "scroll_accel_mean": 8075.826658063079,
+            "interaction_density": 6.866810161457977,
+            "avg_idle_duration": 1.1474012398935998
+          }
+        },
+        {
+          "session_id": "adv_l4_002",
+          "human_probability": 0.69,
+          "risk_score": 48.346042999608095,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 961.420199808985,
+            "mouse_accel_variance": 570160283.5541168,
+            "click_interval_mean": 0.5479336646327975,
+            "click_interval_std": 0.04268850847486283,
+            "typing_latency_variance": 0.10236310702479093,
+            "scroll_speed_mean": 1865.5899710962863,
+            "scroll_accel_mean": -3580.975091654719,
+            "interaction_density": 6.5403837558702,
+            "avg_idle_duration": 1.1106959602161595
+          }
+        }
+      ],
+      "mean_features": {
+        "avg_mouse_speed": 720.3790764964338,
+        "mouse_accel_variance": 305644355.08491594,
+        "click_interval_mean": 0.5487586556543511,
+        "click_interval_std": 0.052596380887776364,
+        "typing_latency_variance": 0.10902372098305003,
+        "scroll_speed_mean": 1649.719179742079,
+        "scroll_accel_mean": 2118.9800726303274,
+        "interaction_density": 7.221516891084672,
+        "avg_idle_duration": 1.068280308354526
+      }
+    },
+    "Level 5": {
+      "level_name": "Level 5",
+      "sample_count": 200,
+      "detection_rate": 0.0,
+      "false_acceptance_rate_far": 1.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.7554,
+        "median": 0.77,
+        "std": 0.1086
+      },
+      "risk_score_stats": {
+        "mean": 6.79,
+        "median": 5.35
+      },
+      "decision_distribution": {
+        "allow_count": 200,
+        "challenge_count": 0,
+        "block_count": 0,
+        "allow_percentage": 100.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 0.0
+      },
+      "bypassed_sessions_count": 200,
+      "bypassed_sample_examples": [
+        {
+          "session_id": "adv_l5_000",
+          "human_probability": 0.81,
+          "risk_score": 5.3460429996080965,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 508.1473789779079,
+            "mouse_accel_variance": 169497016.9055803,
+            "click_interval_mean": 0.804981112809046,
+            "click_interval_std": 0.12594192574050794,
+            "typing_latency_variance": 0.21469905727261007,
+            "scroll_speed_mean": 1425.797537409575,
+            "scroll_accel_mean": 1461.3340537236793,
+            "interaction_density": 5.447361906038699,
+            "avg_idle_duration": 1.4305718153641471
+          }
+        },
+        {
+          "session_id": "adv_l5_001",
+          "human_probability": 0.765,
+          "risk_score": 5.3460429996080965,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 547.4780749157192,
+            "mouse_accel_variance": 249904512.75020814,
+            "click_interval_mean": 0.5464996743131264,
+            "click_interval_std": 0.12974483359739117,
+            "typing_latency_variance": 0.20331003741762477,
+            "scroll_speed_mean": 1521.296561320261,
+            "scroll_accel_mean": 1436.5193640516807,
+            "interaction_density": 6.78843014257241,
+            "avg_idle_duration": 1.4448441193058894
+          }
+        },
+        {
+          "session_id": "adv_l5_002",
+          "human_probability": 0.795,
+          "risk_score": 5.3460429996080965,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 643.437491490329,
+            "mouse_accel_variance": 237360403.6528023,
+            "click_interval_mean": 0.43354581414985477,
+            "click_interval_std": 0.12586484629328776,
+            "typing_latency_variance": 0.12478296859711585,
+            "scroll_speed_mean": 1412.8801117260257,
+            "scroll_accel_mean": 906.2413002440364,
+            "interaction_density": 6.830230044352163,
+            "avg_idle_duration": 1.400782183921152
+          }
+        }
+      ],
+      "mean_features": {
+        "avg_mouse_speed": 507.74597159128854,
+        "mouse_accel_variance": 186629032.0641647,
+        "click_interval_mean": 0.6152041710910381,
+        "click_interval_std": 0.11814899438238094,
+        "typing_latency_variance": 0.20957519392360419,
+        "scroll_speed_mean": 1643.5170374260829,
+        "scroll_accel_mean": 2619.5613809835263,
+        "interaction_density": 6.065853795166037,
+        "avg_idle_duration": 1.5625879550029145
+      }
+    },
+    "Human Control": {
+      "level_name": "Human Control",
+      "sample_count": 200,
+      "detection_rate": 1.0,
+      "false_acceptance_rate_far": 0.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.5021,
+        "median": 0.605,
+        "std": 0.1975
+      },
+      "risk_score_stats": {
+        "mean": 12.93,
+        "median": 10.35
+      },
+      "decision_distribution": {
+        "allow_count": 200,
+        "challenge_count": 0,
+        "block_count": 0,
+        "allow_percentage": 100.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 0.0
+      },
+      "bypassed_sessions_count": 0,
+      "bypassed_sample_examples": [],
+      "mean_features": {
+        "avg_mouse_speed": 507.1898550079305,
+        "mouse_accel_variance": 297335625.9293016,
+        "click_interval_mean": 0.6451016244813501,
+        "click_interval_std": 0.09742799708155143,
+        "typing_latency_variance": 0.0043447940541517065,
+        "scroll_speed_mean": 2623.0040905217797,
+        "scroll_accel_mean": 5576.6097060615275,
+        "interaction_density": 6.654187434952006,
+        "avg_idle_duration": 0.14972925533437
+      }
+    }
+  },
+  "calibrated_model": {
+    "Level 1": {
+      "level_name": "Level 1",
+      "sample_count": 200,
+      "detection_rate": 1.0,
+      "false_acceptance_rate_far": 0.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.005,
+        "median": 0.005,
+        "std": 0.0
+      },
+      "risk_score_stats": {
+        "mean": 100.0,
+        "median": 100.0
+      },
+      "decision_distribution": {
+        "allow_count": 0,
+        "challenge_count": 0,
+        "block_count": 200,
+        "allow_percentage": 0.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 100.0
+      },
+      "bypassed_sessions_count": 0,
+      "bypassed_sample_examples": [],
+      "mean_features": {
+        "avg_mouse_speed": 2000.6249023742464,
+        "mouse_accel_variance": 0.0,
+        "click_interval_mean": 0.10000000000000007,
+        "click_interval_std": 0.0,
+        "typing_latency_variance": 7.52316384526264e-37,
+        "scroll_speed_mean": 0.0,
+        "scroll_accel_mean": 0.0,
+        "interaction_density": 56.0,
+        "avg_idle_duration": 0.0
+      }
+    },
+    "Level 2": {
+      "level_name": "Level 2",
+      "sample_count": 200,
+      "detection_rate": 1.0,
+      "false_acceptance_rate_far": 0.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.3903,
+        "median": 0.4605,
+        "std": 0.1828
+      },
+      "risk_score_stats": {
+        "mean": 96.76,
+        "median": 98.51
+      },
+      "decision_distribution": {
+        "allow_count": 0,
+        "challenge_count": 0,
+        "block_count": 200,
+        "allow_percentage": 0.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 100.0
+      },
+      "bypassed_sessions_count": 0,
+      "bypassed_sample_examples": [],
+      "mean_features": {
+        "avg_mouse_speed": 1345.4207987800046,
+        "mouse_accel_variance": 3250597091.961644,
+        "click_interval_mean": 0.1885951152683158,
+        "click_interval_std": 0.052597428919959624,
+        "typing_latency_variance": 0.00015100878476911664,
+        "scroll_speed_mean": 3067.3328978909904,
+        "scroll_accel_mean": 6927.073373138755,
+        "interaction_density": 28.14780287016012,
+        "avg_idle_duration": 0.0
+      }
+    },
+    "Level 3": {
+      "level_name": "Level 3",
+      "sample_count": 200,
+      "detection_rate": 1.0,
+      "false_acceptance_rate_far": 0.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.0619,
+        "median": 0.0627,
+        "std": 0.0288
+      },
+      "risk_score_stats": {
+        "mean": 100.0,
+        "median": 100.0
+      },
+      "decision_distribution": {
+        "allow_count": 0,
+        "challenge_count": 0,
+        "block_count": 200,
+        "allow_percentage": 0.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 100.0
+      },
+      "bypassed_sessions_count": 0,
+      "bypassed_sample_examples": [],
+      "mean_features": {
+        "avg_mouse_speed": 837.6237356043648,
+        "mouse_accel_variance": 398482309.2653667,
+        "click_interval_mean": 0.0,
+        "click_interval_std": 0.0,
+        "typing_latency_variance": 0.0007500505948281111,
+        "scroll_speed_mean": 0.0,
+        "scroll_accel_mean": 0.0,
+        "interaction_density": 21.739404773608516,
+        "avg_idle_duration": 0.0
+      }
+    },
+    "Level 4": {
+      "level_name": "Level 4",
+      "sample_count": 200,
+      "detection_rate": 0.0,
+      "false_acceptance_rate_far": 1.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.9946,
+        "median": 0.9951,
+        "std": 0.0059
+      },
+      "risk_score_stats": {
+        "mean": 27.07,
+        "median": 13.41
+      },
+      "decision_distribution": {
+        "allow_count": 200,
+        "challenge_count": 0,
+        "block_count": 0,
+        "allow_percentage": 100.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 0.0
+      },
+      "bypassed_sessions_count": 200,
+      "bypassed_sample_examples": [
+        {
+          "session_id": "adv_l4_000",
+          "human_probability": 0.9950565285770272,
+          "risk_score": 13.346042999608096,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 824.8041601136842,
+            "mouse_accel_variance": 369671194.7121514,
+            "click_interval_mean": 0.780363398799399,
+            "click_interval_std": 0.0,
+            "typing_latency_variance": 0.05344036117052012,
+            "scroll_speed_mean": 1407.7711028683784,
+            "scroll_accel_mean": 2514.883115426411,
+            "interaction_density": 9.652045138761247,
+            "avg_idle_duration": 1.2013196024107597
+          }
+        },
+        {
+          "session_id": "adv_l4_001",
+          "human_probability": 0.9950565285770272,
+          "risk_score": 13.346042999608096,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 757.0247892738892,
+            "mouse_accel_variance": 290504089.9475187,
+            "click_interval_mean": 0.3690532116830564,
+            "click_interval_std": 0.0,
+            "typing_latency_variance": 0.11341231646983231,
+            "scroll_speed_mean": 2127.182696971849,
+            "scroll_accel_mean": 8075.826658063079,
+            "interaction_density": 6.866810161457977,
+            "avg_idle_duration": 1.1474012398935998
+          }
+        },
+        {
+          "session_id": "adv_l4_002",
+          "human_probability": 0.9950565285770272,
+          "risk_score": 48.346042999608095,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 961.420199808985,
+            "mouse_accel_variance": 570160283.5541168,
+            "click_interval_mean": 0.5479336646327975,
+            "click_interval_std": 0.04268850847486283,
+            "typing_latency_variance": 0.10236310702479093,
+            "scroll_speed_mean": 1865.5899710962863,
+            "scroll_accel_mean": -3580.975091654719,
+            "interaction_density": 6.5403837558702,
+            "avg_idle_duration": 1.1106959602161595
+          }
+        }
+      ],
+      "mean_features": {
+        "avg_mouse_speed": 720.3790764964338,
+        "mouse_accel_variance": 305644355.08491594,
+        "click_interval_mean": 0.5487586556543511,
+        "click_interval_std": 0.052596380887776364,
+        "typing_latency_variance": 0.10902372098305003,
+        "scroll_speed_mean": 1649.719179742079,
+        "scroll_accel_mean": 2118.9800726303274,
+        "interaction_density": 7.221516891084672,
+        "avg_idle_duration": 1.068280308354526
+      }
+    },
+    "Level 5": {
+      "level_name": "Level 5",
+      "sample_count": 200,
+      "detection_rate": 0.0,
+      "false_acceptance_rate_far": 1.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.9951,
+        "median": 0.9951,
+        "std": 0.0
+      },
+      "risk_score_stats": {
+        "mean": 6.79,
+        "median": 5.35
+      },
+      "decision_distribution": {
+        "allow_count": 200,
+        "challenge_count": 0,
+        "block_count": 0,
+        "allow_percentage": 100.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 0.0
+      },
+      "bypassed_sessions_count": 200,
+      "bypassed_sample_examples": [
+        {
+          "session_id": "adv_l5_000",
+          "human_probability": 0.9950565285770272,
+          "risk_score": 5.3460429996080965,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 508.1473789779079,
+            "mouse_accel_variance": 169497016.9055803,
+            "click_interval_mean": 0.804981112809046,
+            "click_interval_std": 0.12594192574050794,
+            "typing_latency_variance": 0.21469905727261007,
+            "scroll_speed_mean": 1425.797537409575,
+            "scroll_accel_mean": 1461.3340537236793,
+            "interaction_density": 5.447361906038699,
+            "avg_idle_duration": 1.4305718153641471
+          }
+        },
+        {
+          "session_id": "adv_l5_001",
+          "human_probability": 0.9950565285770272,
+          "risk_score": 5.3460429996080965,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 547.4780749157192,
+            "mouse_accel_variance": 249904512.75020814,
+            "click_interval_mean": 0.5464996743131264,
+            "click_interval_std": 0.12974483359739117,
+            "typing_latency_variance": 0.20331003741762477,
+            "scroll_speed_mean": 1521.296561320261,
+            "scroll_accel_mean": 1436.5193640516807,
+            "interaction_density": 6.78843014257241,
+            "avg_idle_duration": 1.4448441193058894
+          }
+        },
+        {
+          "session_id": "adv_l5_002",
+          "human_probability": 0.9950565285770272,
+          "risk_score": 5.3460429996080965,
+          "recommended_action": "allow",
+          "feature_values": {
+            "avg_mouse_speed": 643.437491490329,
+            "mouse_accel_variance": 237360403.6528023,
+            "click_interval_mean": 0.43354581414985477,
+            "click_interval_std": 0.12586484629328776,
+            "typing_latency_variance": 0.12478296859711585,
+            "scroll_speed_mean": 1412.8801117260257,
+            "scroll_accel_mean": 906.2413002440364,
+            "interaction_density": 6.830230044352163,
+            "avg_idle_duration": 1.400782183921152
+          }
+        }
+      ],
+      "mean_features": {
+        "avg_mouse_speed": 507.74597159128854,
+        "mouse_accel_variance": 186629032.0641647,
+        "click_interval_mean": 0.6152041710910381,
+        "click_interval_std": 0.11814899438238094,
+        "typing_latency_variance": 0.20957519392360419,
+        "scroll_speed_mean": 1643.5170374260829,
+        "scroll_accel_mean": 2619.5613809835263,
+        "interaction_density": 6.065853795166037,
+        "avg_idle_duration": 1.5625879550029145
+      }
+    },
+    "Human Control": {
+      "level_name": "Human Control",
+      "sample_count": 200,
+      "detection_rate": 1.0,
+      "false_acceptance_rate_far": 0.0,
+      "false_rejection_rate_frr": 0.0,
+      "probability_stats": {
+        "mean": 0.995,
+        "median": 0.9951,
+        "std": 0.0001
+      },
+      "risk_score_stats": {
+        "mean": 12.93,
+        "median": 10.35
+      },
+      "decision_distribution": {
+        "allow_count": 200,
+        "challenge_count": 0,
+        "block_count": 0,
+        "allow_percentage": 100.0,
+        "challenge_percentage": 0.0,
+        "block_percentage": 0.0
+      },
+      "bypassed_sessions_count": 0,
+      "bypassed_sample_examples": [],
+      "mean_features": {
+        "avg_mouse_speed": 507.1898550079305,
+        "mouse_accel_variance": 297335625.9293016,
+        "click_interval_mean": 0.6451016244813501,
+        "click_interval_std": 0.09742799708155143,
+        "typing_latency_variance": 0.0043447940541517065,
+        "scroll_speed_mean": 2623.0040905217797,
+        "scroll_accel_mean": 5576.6097060615275,
+        "interaction_density": 6.654187434952006,
+        "avg_idle_duration": 0.14972925533437
+      }
+    }
+  },
+  "feature_robustness_analysis": {
+    "avg_mouse_speed": {
+      "human_mean": 507.1899,
+      "level1_bot_mean": 2000.6249,
+      "level5_bot_mean": 507.746,
+      "level5_distance_to_human": 0.0011,
+      "status": "Mimicked (Overlap Achieved)"
+    },
+    "mouse_accel_variance": {
+      "human_mean": 297335625.9293,
+      "level1_bot_mean": 0.0,
+      "level5_bot_mean": 186629032.0642,
+      "level5_distance_to_human": 0.3723,
+      "status": "Discriminative (Separable)"
+    },
+    "click_interval_mean": {
+      "human_mean": 0.6451,
+      "level1_bot_mean": 0.1,
+      "level5_bot_mean": 0.6152,
+      "level5_distance_to_human": 0.0463,
+      "status": "Mimicked (Overlap Achieved)"
+    },
+    "click_interval_std": {
+      "human_mean": 0.0974,
+      "level1_bot_mean": 0.0,
+      "level5_bot_mean": 0.1181,
+      "level5_distance_to_human": 0.2127,
+      "status": "Mimicked (Overlap Achieved)"
+    },
+    "typing_latency_variance": {
+      "human_mean": 0.0043,
+      "level1_bot_mean": 0.0,
+      "level5_bot_mean": 0.2096,
+      "level5_distance_to_human": 47.2251,
+      "status": "Discriminative (Separable)"
+    },
+    "scroll_speed_mean": {
+      "human_mean": 2623.0041,
+      "level1_bot_mean": 0.0,
+      "level5_bot_mean": 1643.517,
+      "level5_distance_to_human": 0.3734,
+      "status": "Discriminative (Separable)"
+    },
+    "scroll_accel_mean": {
+      "human_mean": 5576.6097,
+      "level1_bot_mean": 0.0,
+      "level5_bot_mean": 2619.5614,
+      "level5_distance_to_human": 0.5303,
+      "status": "Discriminative (Separable)"
+    },
+    "interaction_density": {
+      "human_mean": 6.6542,
+      "level1_bot_mean": 56.0,
+      "level5_bot_mean": 6.0659,
+      "level5_distance_to_human": 0.0884,
+      "status": "Mimicked (Overlap Achieved)"
+    },
+    "avg_idle_duration": {
+      "human_mean": 0.1497,
+      "level1_bot_mean": 0.0,
+      "level5_bot_mean": 1.5626,
+      "level5_distance_to_human": 9.436,
+      "status": "Discriminative (Separable)"
+    }
+  }
+}

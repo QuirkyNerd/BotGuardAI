@@ -1,0 +1,166 @@
+{
+  "timestamp_utc": "2026-08-05T06:32:12.998531+00:00",
+  "random_seed": 42,
+  "sequence_specification": {
+    "max_sequence_length": 60,
+    "feature_dimension": 7,
+    "privacy_guarantee": "No typed character content is inspected or stored; timestamp & timing deltas only."
+  },
+  "models": {
+    "1D_CNN": {
+      "parameters_count": 9217,
+      "model_size_kb": 43.02,
+      "benchmark_results": {
+        "Human Control": {
+          "sample_count": 200,
+          "detection_rate": 1.0,
+          "false_acceptance_rate_far": 0.0,
+          "human_false_rejection_rate_frr": 0.0,
+          "probability_stats": {
+            "mean_human_prob": 0.9996,
+            "median_human_prob": 0.9997,
+            "std_human_prob": 0.0005
+          },
+          "mean_inference_latency_ms": 0.0245
+        },
+        "Level 1": {
+          "sample_count": 200,
+          "detection_rate": 1.0,
+          "false_acceptance_rate_far": 0.0,
+          "human_false_rejection_rate_frr": 0.0,
+          "probability_stats": {
+            "mean_human_prob": 0.0001,
+            "median_human_prob": 0.0001,
+            "std_human_prob": 0.0
+          },
+          "mean_inference_latency_ms": 0.0108
+        },
+        "Level 2": {
+          "sample_count": 200,
+          "detection_rate": 1.0,
+          "false_acceptance_rate_far": 0.0,
+          "human_false_rejection_rate_frr": 0.0,
+          "probability_stats": {
+            "mean_human_prob": 0.0001,
+            "median_human_prob": 0.0001,
+            "std_human_prob": 0.0
+          },
+          "mean_inference_latency_ms": 0.0092
+        },
+        "Level 3": {
+          "sample_count": 200,
+          "detection_rate": 1.0,
+          "false_acceptance_rate_far": 0.0,
+          "human_false_rejection_rate_frr": 0.0,
+          "probability_stats": {
+            "mean_human_prob": 0.0007,
+            "median_human_prob": 0.0007,
+            "std_human_prob": 0.0002
+          },
+          "mean_inference_latency_ms": 0.0081
+        },
+        "Level 4": {
+          "sample_count": 200,
+          "detection_rate": 1.0,
+          "false_acceptance_rate_far": 0.0,
+          "human_false_rejection_rate_frr": 0.0,
+          "probability_stats": {
+            "mean_human_prob": 0.0005,
+            "median_human_prob": 0.0002,
+            "std_human_prob": 0.0012
+          },
+          "mean_inference_latency_ms": 0.008
+        },
+        "Level 5": {
+          "sample_count": 200,
+          "detection_rate": 1.0,
+          "false_acceptance_rate_far": 0.0,
+          "human_false_rejection_rate_frr": 0.0,
+          "probability_stats": {
+            "mean_human_prob": 0.0004,
+            "median_human_prob": 0.0001,
+            "std_human_prob": 0.0007
+          },
+          "mean_inference_latency_ms": 0.0077
+        }
+      }
+    },
+    "GRU": {
+      "parameters_count": 3969,
+      "benchmark_results": {
+        "Human Control": {
+          "sample_count": 200,
+          "detection_rate": 1.0,
+          "false_acceptance_rate_far": 0.0,
+          "human_false_rejection_rate_frr": 0.01,
+          "probability_stats": {
+            "mean_human_prob": 0.9797,
+            "median_human_prob": 0.9983,
+            "std_human_prob": 0.0799
+          },
+          "mean_inference_latency_ms": 0.0298
+        },
+        "Level 1": {
+          "sample_count": 200,
+          "detection_rate": 1.0,
+          "false_acceptance_rate_far": 0.0,
+          "human_false_rejection_rate_frr": 0.0,
+          "probability_stats": {
+            "mean_human_prob": 0.0047,
+            "median_human_prob": 0.0047,
+            "std_human_prob": 0.0
+          },
+          "mean_inference_latency_ms": 0.0303
+        },
+        "Level 2": {
+          "sample_count": 200,
+          "detection_rate": 1.0,
+          "false_acceptance_rate_far": 0.0,
+          "human_false_rejection_rate_frr": 0.0,
+          "probability_stats": {
+            "mean_human_prob": 0.1385,
+            "median_human_prob": 0.1273,
+            "std_human_prob": 0.0613
+          },
+          "mean_inference_latency_ms": 0.0272
+        },
+        "Level 3": {
+          "sample_count": 200,
+          "detection_rate": 1.0,
+          "false_acceptance_rate_far": 0.0,
+          "human_false_rejection_rate_frr": 0.0,
+          "probability_stats": {
+            "mean_human_prob": 0.0032,
+            "median_human_prob": 0.0032,
+            "std_human_prob": 0.0
+          },
+          "mean_inference_latency_ms": 0.027
+        },
+        "Level 4": {
+          "sample_count": 200,
+          "detection_rate": 0.95,
+          "false_acceptance_rate_far": 0.05,
+          "human_false_rejection_rate_frr": 0.0,
+          "probability_stats": {
+            "mean_human_prob": 0.1895,
+            "median_human_prob": 0.1269,
+            "std_human_prob": 0.1597
+          },
+          "mean_inference_latency_ms": 0.0309
+        },
+        "Level 5": {
+          "sample_count": 200,
+          "detection_rate": 1.0,
+          "false_acceptance_rate_far": 0.0,
+          "human_false_rejection_rate_frr": 0.0,
+          "probability_stats": {
+            "mean_human_prob": 0.0036,
+            "median_human_prob": 0.0017,
+            "std_human_prob": 0.0107
+          },
+          "mean_inference_latency_ms": 0.0281
+        }
+      }
+    }
+  }
+}
