@@ -1,21 +1,15 @@
-# BotGuard AI
+# Behavioral Bot Detection - Multi-Engine Behavioral Intelligence for Passive Human Verification
 
-## Behavioral Intelligence for Passive Human Verification & Adaptive Bot Detection
+## 📌 Overview
 
 BotGuard AI is a real-time, privacy-first behavioral biometrics framework designed as a non-intrusive alternative to traditional CAPTCHAs. By analyzing client-side micro-interactions—such as mouse movement speed and acceleration variance, click interval distributions, scroll dynamics, interaction density, and inter-keystroke timing deltas—BotGuard AI evaluates session legitimacy without inspecting typed character content or capturing personally identifiable information (PII).
 
 The core platform combines a **Multi-Engine Intelligence Stack** (Calibrated Random Forest, Isolation Forest Anomaly Detector, and Temporal 1D Convolutional Neural Network) with **Risk Engine 2.0** to deliver adaptive access control decisions (`ALLOW`, `CHALLENGE`, `BLOCK`) with sub-45ms end-to-end latency.
 
 ---
-
-## Live Links & Deployment
-
-* **Web Application:** [https://bot-guard-ai.vercel.app](https://bot-guard-ai.vercel.app)
-* **Backend API & Swagger Documentation:** [https://botguardai.onrender.com/docs](https://botguardai.onrender.com/docs)
-
 ---
 
-## Key System Highlights
+## ✨ Key Features
 
 * **Passive Human Verification:** Offers a non-intrusive alternative to visual CAPTCHAs via continuous background behavioral analysis.
 * **Privacy-By-Design Telemetry:** Keyboard telemetry strips character values completely. Only inter-keystroke timing deltas (`dt`) are retained for biometrics.
@@ -25,7 +19,7 @@ The core platform combines a **Multi-Engine Intelligence Stack** (Calibrated Ran
 
 ---
 
-## Architecture Overview
+## 🏗️ Architecture Overview
 
 ```mermaid
 flowchart TD
@@ -77,7 +71,7 @@ flowchart TD
 
 ---
 
-## Multi-Engine Intelligence Stack
+## 🧠 Multi-Engine Intelligence Stack
 
 BotGuard AI orchestrates three distinct machine learning engines to prevent single-model evasion:
 
@@ -173,7 +167,7 @@ Performance metrics derived from `backend/ml/artifacts/fusion_benchmark_metrics.
 
 ---
 
-## Project Structure & File Layout
+## 📁 Project Structure & File Layout
 
 ```
 BotGuardAI/
@@ -231,12 +225,7 @@ BotGuardAI/
 
 ---
 
-## Local Setup & Execution Guide
-
-### Prerequisites
-* **Python:** 3.11.x
-* **Node.js:** 18.x or higher
-* **Git**
+## ⚡ Quick Start
 
 ### 1. Repository Setup
 ```bash
@@ -261,7 +250,6 @@ pip install -r requirements.txt
 alembic upgrade head
 ```
 
-> **Note for Windows Users:** If PyTorch emits `WinError 126` (`fbgemm.dll`), copy `libiomp5md.dll` to `venv/Lib/site-packages/torch/lib/libomp140.x86_64.dll` or install standard C++ Redistributable runtime.
 
 ### 3. Running the Backend Server
 ```bash
@@ -298,10 +286,11 @@ npm run dev
 
 ---
 
-## Automated Testing
+## 📄 License
 
-Execute the test suite:
+This project is developed for academic and research demonstration purposes under the MIT License.
 
-```bash
-pytest tests/
-```
+© 2026 Behavioral Bot Detection
+
+---
+
