@@ -1,7 +1,7 @@
 # Behavioral Bot Detection 
 
 > Multi-engine behavioral bot detection using calibrated classification, anomaly detection, temporal modeling for Passive Human Verification.
-> 
+
 ---
 
 ## 📌 Overview
@@ -158,6 +158,7 @@ Performance metrics derived from `backend/ml/artifacts/fusion_benchmark_metrics.
 ---
 
 ## Benchmark Visualizations
+> Benchmark Note: Reported performance is measured on a controlled, reproducible adversarial simulation suite spanning five progressively sophisticated bot-behavior profiles. These results are intended to evaluate model robustness and compare detection strategies under defined experimental conditions; they should not be interpreted as production performance guarantees or universal detection rates against real-world automation.
 
 ### Benchmark Detection Rates Across Bot Evasion Levels
 ![Benchmark Detection Rates](docs/assets/benchmark_detection_rates.png)
