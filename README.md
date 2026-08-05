@@ -1,6 +1,6 @@
 # Behavioral Bot Detection 
 
-> Multi-Engine Behavioral Intelligence for Passive Human Verification
+> Multi-engine behavioral bot detection using calibrated classification, anomaly detection, temporal modeling for Passive Human Verification.
 
 ## 📌 Overview
 
