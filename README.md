@@ -60,9 +60,9 @@ flowchart TD
     subgraph RiskEngine ["Risk Engine 2.0 Fusion"]
         Fusion["Composite Risk Score & Decision Logic"]
         
-        RF -->|Human Prob (35%)| Fusion
-        IF -->|Anomaly Score (30%)| Fusion
-        CNN -->|Sequence Prob (35%)| Fusion
+        RF -->|Human Probability - 35 percent| Fusion
+        IF -->|Anomaly Score - 30 percent| Fusion
+        CNN -->|Sequence Probability - 35 percent| Fusion
         SecMiddleware -->|Security Context Flags| Fusion
     end
 
@@ -91,7 +91,7 @@ BotGuard AI orchestrates three distinct machine learning engines to prevent sing
 * **Role:** Novelty and out-of-distribution (OOD) detection. Flags automated scripts and zero-day bot frameworks whose statistical distribution strays from baseline human behavior.
 
 ### 3. Temporal 1D Convolutional Neural Network (`temporal_model.pt`)
-* **Input:** Raw chronologically sorted 7-dimensional event sequence matrix $(T=60, C=7)$ representing $(dt_{norm}, is_{mouse}, is_{click}, is_{key}, is_{scroll}, spatial_{norm}, velocity_{norm})$.
+* **Input:** Raw chronologically sorted 7-dimensional event sequence matrix `(T=60, C=7)` representing `(dt_norm, is_mouse, is_click, is_key, is_scroll, spatial_norm, velocity_norm)`.
 * **Architecture:** Dual 1D Conv layers with Batch Normalization, ReLU activation, Adaptive Average Pooling, and a Linear classifier.
 * **Role:** Evaluates micro-acceleration curves, continuous trajectory dynamics, and sequential timing patterns directly from raw telemetry.
 
@@ -99,7 +99,7 @@ BotGuard AI orchestrates three distinct machine learning engines to prevent sing
 
 ## Risk Engine 2.0 & Decision Logic
 
-The **Risk Engine 2.0** fuses predictions from the Multi-Engine stack with real-time security context flags into a composite risk score $R \in [0, 100]$.
+The **Risk Engine 2.0** fuses predictions from the Multi-Engine stack with real-time security context flags into a composite risk score `R ∈ [0, 100]`.
 
 ### Multi-Engine Weight Configuration
 * `WEIGHT_RF`: 0.35 (Calibrated Random Forest)
@@ -118,9 +118,9 @@ The **Risk Engine 2.0** fuses predictions from the Multi-Engine stack with real-
 
 | Risk Level | Composite Risk Score Range | System Action | Description |
 | :--- | :--- | :--- | :--- |
-| **LOW** | $0.0 \le \text{Risk} < 35.0$ | **ALLOW** | Session verified as human. Access granted without interruption. |
-| **MEDIUM** | $35.0 \le \text{Risk} \le 65.0$ | **CHALLENGE** | Ambiguous behavior detected. Triggers step-up fallback challenge. |
-| **HIGH / CRITICAL** | $\text{Risk} > 65.0$ | **BLOCK** | Bot signature or severe anomaly confirmed. Access blocked immediately. |
+| **LOW** | `0.0 ≤ Risk < 35.0` | **ALLOW** | Session verified as human. Access granted without interruption. |
+| **MEDIUM** | `35.0 ≤ Risk ≤ 65.0` | **CHALLENGE** | Ambiguous behavior detected. Triggers step-up fallback challenge. |
+| **HIGH / CRITICAL** | `Risk > 65.0` | **BLOCK** | Bot signature or severe anomaly confirmed. Access blocked immediately. |
 
 ---
 
@@ -130,15 +130,15 @@ The system computes 9 exact numerical features defined in `backend/services/feat
 
 | Feature Name | Primary Signal | Description |
 | :--- | :--- | :--- |
-| `avg_mouse_speed` | Mouse Speed | Mean pointer movement velocity ($\text{px/s}$). |
-| `mouse_accel_variance` | Acceleration Wobble | Variance of mouse movement acceleration ($\text{px/s}^2$). |
+| `avg_mouse_speed` | Mouse Speed | Mean pointer movement velocity (`px/s`). |
+| `mouse_accel_variance` | Acceleration Wobble | Variance of mouse movement acceleration (`px/s²`). |
 | `click_interval_mean` | Click Cadence | Mean interval between consecutive mouse clicks (seconds). |
 | `click_interval_std` | Click Variance | Standard deviation of inter-click intervals (seconds). |
-| `typing_latency_variance` | Keystroke Timing | Variance of inter-keystroke delays ($dt$) for typing dynamics. |
-| `scroll_speed_mean` | Scroll Velocity | Mean scrolling speed ($\text{delta\_y/s}$). |
+| `typing_latency_variance` | Keystroke Timing | Variance of inter-keystroke delays (`dt`) for typing dynamics. |
+| `scroll_speed_mean` | Scroll Velocity | Mean scrolling speed (`delta_y/s`). |
 | `scroll_accel_mean` | Scroll Acceleration | Mean acceleration of page scrolling interactions. |
-| `interaction_density` | Event Rate | Total behavioral events normalized by active session duration ($\text{events/s}$). |
-| `avg_idle_duration` | Pause Duration | Average duration of idle gaps ($>1.0\text{s}$) between event clusters. |
+| `interaction_density` | Event Rate | Total behavioral events normalized by active session duration (`events/s`). |
+| `avg_idle_duration` | Pause Duration | Average duration of idle gaps (`> 1.0 s`) between event clusters. |
 
 ---
 
